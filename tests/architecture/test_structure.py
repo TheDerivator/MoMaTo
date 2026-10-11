@@ -1,10 +1,13 @@
 """Layer contracts hold, the code map is fresh, files describe themselves, app.py stays thin."""
 
 import importlib.util
+import shutil
+import subprocess
 import tomllib
 from pathlib import Path
 from types import ModuleType
 
+import pytest
 from importlinter.cli import lint_imports
 
 import momato
@@ -42,6 +45,29 @@ def test_every_source_file_has_a_summary() -> None:
         if not {"__pycache__", "vendor"} & set(path.parts) and not codemap.summarize(path)
     ]
     assert missing == []
+
+
+def test_no_source_file_is_hidden_by_gitignore() -> None:
+    """A generic rule such as `lib/` once hid the whole `static/js/lib` folder from the
+    repository, so the deployed copy could not load. Ignored files may only be caches."""
+    git = shutil.which("git")
+    if git is None or not (ROOT / ".git").exists():
+        pytest.skip("not a git checkout")
+    listing = subprocess.run(  # noqa: S603  (fixed arguments)
+        [git, "ls-files", "--others", "--ignored", "--exclude-standard", "-z"],
+        cwd=ROOT,
+        capture_output=True,
+        check=True,
+        text=True,
+    ).stdout
+    hidden = [
+        name
+        for name in listing.split("\0")
+        if name.startswith(("momato/", "tests/", "scripts/"))
+        and "__pycache__" not in name
+        and not name.startswith("tests/e2e/_failures/")
+    ]
+    assert hidden == [], "ignored by .gitignore, so never committed: tighten the rule"
 
 
 def test_entrypoint_stays_thin() -> None:
