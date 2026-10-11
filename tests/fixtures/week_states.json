@@ -1,0 +1,175 @@
+{
+  "description": "R4.9 week states. targets/booked are minutes Monday to Friday; today_index is Monday 0 in the current week and 7 for a past week. Expected texts derived by hand from the table of R4.9.",
+  "cases": [
+    {
+      "name": "Anna's week 41 on Thursday (the design): Monday and Tuesday full",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 480, 0, 0, 0],
+      "today_index": 3, "submitted": false, "week_number": 41,
+      "state": "partial", "full_days": 2, "open_days": [],
+      "title": "Two days done!", "cta": "Keep going →",
+      "headline": "Two days done, 3 to go",
+      "subline": "16 of 40 h logged. Next up: Wednesday.",
+      "tags": ["done", "done", "", "today", "next"]
+    },
+    {
+      "name": "one day open: Tuesday is before yesterday",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 0, 0, 0, 0],
+      "today_index": 3, "submitted": false, "week_number": 41,
+      "state": "open", "full_days": 1, "open_days": [1],
+      "title": "Tuesday still open", "cta": "Catch up →",
+      "headline": "Let's catch up on Tuesday",
+      "subline": "Catching up takes a minute. 8 of 40 h logged so far.",
+      "tags": ["done", "open", "", "today", "next"]
+    },
+    {
+      "name": "two days open are joined by and",
+      "targets": [480, 480, 480, 480, 480], "booked": [0, 0, 0, 0, 0],
+      "today_index": 3, "submitted": false, "week_number": 41,
+      "state": "open", "full_days": 0, "open_days": [0, 1],
+      "title": "Monday and Tuesday still open", "cta": "Catch up →",
+      "headline": "Let's catch up on Monday and Tuesday",
+      "subline": "Catching up takes a minute. 0 of 40 h logged so far.",
+      "tags": ["open", "open", "", "today", "next"]
+    },
+    {
+      "name": "three days open are counted",
+      "targets": [480, 480, 480, 480, 480], "booked": [0, 0, 0, 0, 0],
+      "today_index": 4, "submitted": false, "week_number": 41,
+      "state": "open", "full_days": 0, "open_days": [0, 1, 2],
+      "title": "3 days still open", "cta": "Catch up →",
+      "headline": "Let's catch up on 3 days",
+      "subline": "Catching up takes a minute. 0 of 40 h logged so far.",
+      "tags": ["open", "open", "open", "", "today"]
+    },
+    {
+      "name": "a full week in the past awaits submission",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 480, 480, 480, 480],
+      "today_index": 7, "submitted": false, "week_number": 40,
+      "state": "full", "full_days": 5, "open_days": [],
+      "title": "Full week done!", "cta": "Submit week →",
+      "headline": "Your week is full. Ready to submit?",
+      "subline": "All five days are in. One tap to submit.",
+      "tags": ["done", "done", "done", "done", "done"]
+    },
+    {
+      "name": "a submitted week",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 480, 480, 480, 480],
+      "today_index": 7, "submitted": true, "week_number": 41,
+      "state": "submitted", "full_days": 5, "open_days": [],
+      "title": "Week 41 submitted ✓", "cta": "View week →",
+      "headline": "Week submitted",
+      "subline": "40 hours logged. Enjoy the weekend.",
+      "tags": ["done", "done", "done", "done", "done"]
+    },
+    {
+      "name": "submitted wins over open days",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 0, 480, 480, 480],
+      "today_index": 7, "submitted": true, "week_number": 41,
+      "state": "submitted", "full_days": 4, "open_days": [1],
+      "title": "Week 41 submitted ✓", "cta": "View week →",
+      "headline": "Week submitted",
+      "subline": "32 hours logged. Enjoy the weekend.",
+      "tags": ["done", "open", "done", "done", "done"]
+    },
+    {
+      "name": "a fresh week on Monday",
+      "targets": [480, 480, 480, 480, 480], "booked": [0, 0, 0, 0, 0],
+      "today_index": 0, "submitted": false, "week_number": 42,
+      "state": "fresh", "full_days": 0, "open_days": [],
+      "title": "Fresh week, let's go", "cta": "Keep going →",
+      "headline": "Let's fill in your week",
+      "subline": "0 of 40 h logged. Next up: Monday.",
+      "tags": ["today", "next", "next", "next", "next"]
+    },
+    {
+      "name": "one day done spells One day",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 0, 0, 0, 0],
+      "today_index": 1, "submitted": false, "week_number": 42,
+      "state": "partial", "full_days": 1, "open_days": [],
+      "title": "One day done!", "cta": "Keep going →",
+      "headline": "One day done, 4 to go",
+      "subline": "8 of 40 h logged. Next up: Tuesday.",
+      "tags": ["done", "today", "next", "next", "next"]
+    },
+    {
+      "name": "an overfull day counts as full",
+      "targets": [480, 480, 480, 480, 480], "booked": [600, 480, 480, 480, 480],
+      "today_index": 7, "submitted": false, "week_number": 40,
+      "state": "full", "full_days": 5, "open_days": [],
+      "title": "Full week done!", "cta": "Submit week →",
+      "headline": "Your week is full. Ready to submit?",
+      "subline": "All five days are in. One tap to submit.",
+      "tags": ["done", "done", "done", "done", "done"]
+    },
+    {
+      "name": "a part-timer with a day off is full with four days",
+      "targets": [480, 480, 480, 480, 0], "booked": [480, 480, 480, 480, 0],
+      "today_index": 7, "submitted": false, "week_number": 40,
+      "state": "full", "full_days": 4, "open_days": [],
+      "title": "Full week done!", "cta": "Submit week →",
+      "headline": "Your week is full. Ready to submit?",
+      "subline": "All four days are in. One tap to submit.",
+      "tags": ["done", "done", "done", "done", ""]
+    },
+    {
+      "name": "a part-timer counts only working days",
+      "targets": [480, 480, 480, 480, 0], "booked": [480, 480, 0, 0, 0],
+      "today_index": 2, "submitted": false, "week_number": 41,
+      "state": "partial", "full_days": 2, "open_days": [],
+      "title": "Two days done!", "cta": "Keep going →",
+      "headline": "Two days done, 2 to go",
+      "subline": "16 of 32 h logged. Next up: Wednesday.",
+      "tags": ["done", "done", "today", "next", ""]
+    },
+    {
+      "name": "a half day is not full",
+      "targets": [480, 480, 480, 480, 480], "booked": [240, 0, 0, 0, 0],
+      "today_index": 0, "submitted": false, "week_number": 41,
+      "state": "fresh", "full_days": 0, "open_days": [],
+      "title": "Fresh week, let's go", "cta": "Keep going →",
+      "headline": "Let's fill in your week",
+      "subline": "4 of 40 h logged. Next up: Monday.",
+      "tags": ["today", "next", "next", "next", "next"]
+    },
+    {
+      "name": "uneven minutes show up to two decimals",
+      "targets": [480, 480, 480, 480, 480], "booked": [450, 0, 0, 0, 0],
+      "today_index": 0, "submitted": false, "week_number": 41,
+      "state": "fresh", "full_days": 0, "open_days": [],
+      "title": "Fresh week, let's go", "cta": "Keep going →",
+      "headline": "Let's fill in your week",
+      "subline": "7.5 of 40 h logged. Next up: Monday.",
+      "tags": ["today", "next", "next", "next", "next"]
+    },
+    {
+      "name": "in a past week every unfinished day is open, Friday included",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 480, 480, 480, 360],
+      "today_index": 7, "submitted": false, "week_number": 40,
+      "state": "open", "full_days": 4, "open_days": [4],
+      "title": "Friday still open", "cta": "Catch up →",
+      "headline": "Let's catch up on Friday",
+      "subline": "Catching up takes a minute. 38 of 40 h logged so far.",
+      "tags": ["done", "done", "done", "done", "open"]
+    },
+    {
+      "name": "on Saturday yesterday's Friday is not yet open",
+      "targets": [480, 480, 480, 480, 480], "booked": [480, 480, 480, 480, 0],
+      "today_index": 5, "submitted": false, "week_number": 41,
+      "state": "partial", "full_days": 4, "open_days": [],
+      "title": "Four days done!", "cta": "Keep going →",
+      "headline": "Four days done, 1 to go",
+      "subline": "32 of 40 h logged. Next up: Friday.",
+      "tags": ["done", "done", "done", "done", ""]
+    },
+    {
+      "name": "one submitted hour reads as hour",
+      "targets": [480, 480, 480, 480, 480], "booked": [60, 0, 0, 0, 0],
+      "today_index": 7, "submitted": true, "week_number": 3,
+      "state": "submitted", "full_days": 0, "open_days": [0, 1, 2, 3, 4],
+      "title": "Week 3 submitted ✓", "cta": "View week →",
+      "headline": "Week submitted",
+      "subline": "1 hour logged. Enjoy the weekend.",
+      "tags": ["open", "open", "open", "open", "open"]
+    }
+  ]
+}

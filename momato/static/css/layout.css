@@ -1,0 +1,470 @@
+/* The shell: organisation tree pane, main menu, top bar and the scrolling content (SH-1..SH-9). */
+
+.app {
+  display: flex;
+  height: 100vh;
+  min-height: 680px;
+  overflow: hidden;
+  background: var(--page);
+}
+
+/* ------------------------------------------------------------------ tree pane */
+
+.tree-pane {
+  width: 236px;
+  flex: none;
+  height: 100%;
+  overflow: auto;
+  padding: 22px 12px;
+  background: var(--tree);
+  border-right: 1px solid var(--tree-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tree-pane__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 4px 10px;
+}
+
+.tree-pane__head .eyebrow {
+  flex: 1;
+  font-size: 11px;
+}
+
+.tree-pane__hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  padding: 0 10px 10px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 8px;
+  border-radius: calc(10px * var(--r));
+  color: var(--ink);
+  transition: background .12s;
+}
+
+.tree-item:hover {
+  background: var(--hover-tree);
+}
+
+.tree-item--selected,
+.tree-item--selected:hover {
+  background: var(--selected);
+  color: var(--selected-ink);
+}
+
+.tree-item__chevron {
+  width: 18px;
+  height: 22px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+button.tree-item__chevron:hover {
+  color: var(--ink);
+  background: var(--tint);
+}
+
+.tree-row {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: var(--w-medium);
+}
+
+.tree-item--shallow .tree-row,
+.tree-item--selected .tree-row {
+  font-weight: var(--w-semibold);
+}
+
+.tree-row__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-row__count {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.tree-item--selected .tree-row__count {
+  color: inherit;
+}
+
+.tree-rail {
+  width: 48px;
+  flex: none;
+  height: 100%;
+  padding: 20px 0;
+  background: var(--tree);
+  border: none;
+  border-right: 1px solid var(--tree-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transition: background .15s;
+}
+
+.tree-rail:hover {
+  background: oklch(var(--l935) calc(.02 * var(--c)) var(--hw));
+}
+
+.tree-rail__button {
+  width: 30px;
+  height: 30px;
+  border-radius: calc(9px * var(--r));
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--muted);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--ring-strong);
+}
+
+.tree-rail__name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 12.5px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+  color: var(--selected-ink);
+}
+
+/* ------------------------------------------------------------------ main menu */
+
+.menu {
+  width: 228px;
+  flex: none;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 14px;
+  background: var(--menu);
+  border-right: 1px solid var(--menu-border);
+}
+
+.menu__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 0 2px 8px;
+}
+
+.logo-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: calc(8px * var(--r));
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.menu__wordmark {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: var(--w-heavy);
+  letter-spacing: -.03em;
+}
+
+.icon-button {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: calc(9px * var(--r));
+  background: transparent;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.icon-button:hover {
+  background: var(--hover-tree);
+  color: var(--ink);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: none;
+  border-radius: var(--radius-row);
+  background: transparent;
+  text-align: left;
+  font-size: 14px;
+  font-weight: var(--w-medium);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background .15s;
+}
+
+.nav__item:hover {
+  background: var(--hover-menu);
+  color: var(--ink);
+}
+
+.nav__item[aria-current="page"] {
+  background: var(--surface);
+  font-weight: var(--w-semibold);
+  box-shadow: 0 1px 2px oklch(.3 .03 285 / .08), 0 0 0 1px var(--ring-strong);
+}
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  background: oklch(var(--l600) calc(.11 * var(--c)) var(--hue));
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.nav-icon--projects {
+  --icon: url("../img/nav-projects.svg");
+}
+
+.nav-icon--plans {
+  --icon: url("../img/nav-plans.svg");
+}
+
+.nav-icon--people {
+  --icon: url("../img/nav-people.svg");
+}
+
+.nav-icon--timesheet {
+  --icon: url("../img/nav-timesheet.svg");
+}
+
+.nav__item[aria-current="page"] .nav-icon {
+  background: oklch(var(--l550) calc(.15 * var(--c)) var(--hue));
+}
+
+.menu__spacer {
+  flex: 1;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: var(--radius-row);
+  background: transparent;
+  text-align: left;
+  transition: background .15s;
+}
+
+.user-row:hover {
+  background: var(--hover-menu);
+}
+
+.user-row__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.user-row__name {
+  font-size: 13px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-row__role {
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-rail {
+  width: 64px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  background: var(--menu);
+  border-right: 1px solid var(--menu-border);
+}
+
+.menu-rail__logo {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: calc(11px * var(--r));
+  background: transparent;
+  display: grid;
+  place-items: center;
+}
+
+.menu-rail__logo:hover,
+.menu-rail__nav:hover {
+  background: var(--hover-menu);
+}
+
+.menu-rail__logo .logo-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: calc(7px * var(--r));
+}
+
+.menu-rail__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-rail .nav__item {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+}
+
+.menu-rail .nav-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ------------------------------------------------------------------ main area */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 28px;
+  border-bottom: 1px solid var(--topbar-border);
+}
+
+.search {
+  flex: 1;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-row);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.search:focus-within {
+  box-shadow: 0 0 0 2px var(--focus);
+}
+
+.search__glass {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.search__chip {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 2px 6px;
+  border-radius: calc(6px * var(--r));
+  background: var(--tint);
+}
+
+.topbar__spacer {
+  flex: 1;
+}
+
+.topbar__date {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* ------------------------------------------------------------------ narrow screens (SH-9) */
+
+@media (max-width: 719px) {
+  /* The rails stay in the flow; an opened pane lies over the page with a backdrop behind it. */
+  .tree-pane,
+  .menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    box-shadow: var(--shadow-menu);
+  }
+
+  .topbar {
+    padding: 12px 16px;
+  }
+}
+
+.pane-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  background: oklch(.27 .03 285 / .28);
+}

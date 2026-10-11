@@ -1,0 +1,25 @@
+{
+  "description": "R4.5 load classes: value against capacity (any unit). Derived by hand from the rule's boundaries: r < 0.40 light, 0.40 <= r < 0.85 comfortable, 0.85 <= r <= 1.02 nearly full, r > 1.02 over.",
+  "cases": [
+    {"value": 0, "capacity": 100, "class": "empty"},
+    {"value": 0, "capacity": 0, "class": "empty"},
+    {"value": 1, "capacity": 0, "class": "over"},
+    {"value": 1, "capacity": 100, "class": "light"},
+    {"value": 39, "capacity": 100, "class": "light"},
+    {"value": 40, "capacity": 100, "class": "comfortable"},
+    {"value": 84, "capacity": 100, "class": "comfortable"},
+    {"value": 85, "capacity": 100, "class": "nearly_full"},
+    {"value": 100, "capacity": 100, "class": "nearly_full"},
+    {"value": 102, "capacity": 100, "class": "nearly_full"},
+    {"value": 103, "capacity": 100, "class": "over"},
+    {"value": 7, "capacity": 20, "class": "light"},
+    {"value": 8, "capacity": 20, "class": "comfortable"},
+    {"value": 16, "capacity": 20, "class": "comfortable"},
+    {"value": 17, "capacity": 20, "class": "nearly_full"},
+    {"value": 51, "capacity": 50, "class": "nearly_full"},
+    {"value": 52, "capacity": 50, "class": "over"},
+    {"value": 1, "capacity": 3, "class": "light"},
+    {"value": 2, "capacity": 5, "class": "comfortable"},
+    {"value": 1200, "capacity": 600, "class": "over"}
+  ]
+}

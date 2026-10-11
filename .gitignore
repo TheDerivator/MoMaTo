@@ -220,3 +220,9 @@ __marimo__/
 .streamlit/secrets.toml
 
 design_handoff_kite_pm_tool/
+
+# Private deployment guide for the real server (hostname, demo password): never commit it
+/docs/DEPLOYMENT.md
+
+# visual regression failures (tests/e2e/test_visual.py)
+tests/e2e/_failures/

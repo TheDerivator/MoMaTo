@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- The single page of the app. The server fills in the base path; all URLs below are relative to it. -->
+<html lang="en" data-mode="light" data-look="playful">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="{{BASE_PATH}}">
+<title>MoMaTo</title>
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="static/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="static/css/fonts.css">
+<link rel="stylesheet" href="static/css/tokens.css">
+<link rel="stylesheet" href="static/css/base.css">
+<link rel="stylesheet" href="static/css/layout.css">
+<link rel="stylesheet" href="static/css/components.css">
+<link rel="stylesheet" href="static/css/projects.css">
+<link rel="stylesheet" href="static/css/project.css">
+<link rel="stylesheet" href="static/css/remarks.css">
+<link rel="stylesheet" href="static/css/timesheet.css">
+<link rel="stylesheet" href="static/css/planning.css">
+<link rel="stylesheet" href="static/css/plans.css">
+<link rel="stylesheet" href="static/css/admin.css">
+<script src="static/js/theme-boot.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "preact": "./static/vendor/preact/preact.module.js",
+    "preact/hooks": "./static/vendor/preact/hooks.module.js",
+    "htm": "./static/vendor/htm/htm.module.js"
+  }
+}
+</script>
+<script type="module" src="static/js/main.js"></script>
+</head>
+<body>
+<div id="app"><div class="loading-screen">MoMaTo</div></div>
+<noscript>MoMaTo needs JavaScript to run.</noscript>
+</body>
+</html>

@@ -1,0 +1,190 @@
+# The default deployment profile: the design's detail cards, time categories, task template, numbers.
+
+# Statuses left out of the project list and its counts unless their chip is selected (PL-2, D-018).
+hidden_statuses = ["stopped"]
+
+[numbers]
+hours_per_day = 8
+day_cap_minutes = 600
+timesheet_step_minutes = 60
+available_days_per_year = 220
+other_work_share = 0.1
+first_project_number = 1000
+
+# ---------------------------------------------------------------- All details (DT-1)
+
+[[cards]]
+key = "identification"
+title = "Identification"
+
+[[cards.fields]]
+key = "number"
+label = "Project number"
+core = "number"
+
+[[cards.fields]]
+key = "erp_order"
+label = "ERP order"
+type = "text"
+
+[[cards.fields]]
+key = "original_project"
+label = "Original project"
+type = "project"
+
+[[cards.fields]]
+key = "activity_type"
+label = "Activity type"
+type = "choice"
+choices = ["Project", "Study", "Improvement"]
+
+[[cards]]
+key = "organisation"
+title = "Organisation"
+
+[[cards.fields]]
+key = "department"
+label = "Department"
+core = "department"
+
+[[cards.fields]]
+key = "sponsor"
+label = "Sponsor"
+type = "person"
+
+[[cards.fields]]
+key = "budget_owner"
+label = "Budget owner"
+type = "choice"
+choices = ["Engineering", "Operations", "Sustainability"]
+
+[[cards.fields]]
+key = "steering_committee"
+label = "Steering committee"
+type = "choice"
+choices = ["Plant board", "Engineering board"]
+
+[[cards]]
+key = "classification"
+title = "Classification"
+
+[[cards.fields]]
+key = "priority"
+label = "Priority"
+core = "priority"
+
+[[cards.fields]]
+key = "strategic_axis"
+label = "Strategic axis"
+type = "choice"
+choices = ["Safety first", "Cost & efficiency", "Sustainability", "Digital"]
+
+[[cards.fields]]
+key = "process"
+label = "Process"
+type = "choice"
+choices = ["Production", "Maintenance", "Logistics", "Utilities"]
+
+[[cards.fields]]
+key = "programme"
+label = "Programme"
+type = "choice"
+choices = ["Plant modernisation 2025–2028", "Operational excellence"]
+
+[[cards.fields]]
+key = "tags"
+label = "Tags"
+type = "tags"
+
+[[cards.fields]]
+key = "ease_of_execution"
+label = "Ease of execution"
+type = "choice"
+choices = ["Easy", "Moderate", "Hard"]
+
+[[cards]]
+key = "involvement"
+title = "Involvement"
+
+[[cards.fields]]
+key = "operations_maintenance"
+label = "Operations & maintenance"
+type = "yes_no"
+
+[[cards.fields]]
+key = "procurement"
+label = "Procurement"
+type = "yes_no"
+
+[[cards.fields]]
+key = "engineering"
+label = "Engineering"
+type = "yes_no"
+
+[[cards.fields]]
+key = "planning_phase"
+label = "Planning phase"
+type = "choice"
+choices = ["Design", "Execution", "Close-out"]
+
+# ---------------------------------------------------------------- Time categories (TS-6)
+
+[[categories]]
+key = "meetings"
+label = "Meetings"
+kind = "other_work"
+
+[[categories]]
+key = "training"
+label = "Training"
+kind = "other_work"
+
+[[categories]]
+key = "admin"
+label = "Admin"
+kind = "other_work"
+
+[[categories]]
+key = "vacation"
+label = "Vacation"
+kind = "time_off"
+
+[[categories]]
+key = "out_of_office"
+label = "Out of office"
+kind = "time_off"
+
+# ---------------------------------------------------------------- Standard phases (PG-6)
+# start and end: where the phase sits in the project's span, 0 at its start and 1 at its end.
+
+[[task_template]]
+name = "Study & scoping"
+start = 0.0
+end = 0.14
+
+[[task_template]]
+name = "Supplier offers"
+start = 0.1
+end = 0.24
+
+[[task_template]]
+name = "Order & delivery"
+start = 0.24
+end = 0.46
+milestone = true
+
+[[task_template]]
+name = "Installation"
+start = 0.44
+end = 0.72
+
+[[task_template]]
+name = "Commissioning"
+start = 0.7
+end = 0.86
+milestone = true
+
+[[task_template]]
+name = "Handover & close-out"
+start = 0.86
+end = 1.0

@@ -1,0 +1,102 @@
+{
+  "description": "R4.8 timesheet booking on one day, in minutes. Cells are keyed 'line:task'. step 60, cap 600 unless stated. 'changed' is the cell that changed, null when nothing happened.",
+  "cases": [
+    {
+      "name": "+ on an empty day books one step",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1", "t2", "general"],
+      "day": {},
+      "expect_day": {"p1:t1": 60}, "changed": "p1:t1"
+    },
+    {
+      "name": "+ adds to what the cell already holds",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1", "t2", "general"],
+      "day": {"p1:t1": 120, "p1:t2": 60},
+      "expect_day": {"p1:t1": 180, "p1:t2": 60}, "changed": "p1:t1"
+    },
+    {
+      "name": "+ reaches the cap exactly",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1"],
+      "day": {"p1:t1": 540},
+      "expect_day": {"p1:t1": 600}, "changed": "p1:t1"
+    },
+    {
+      "name": "+ beyond the cap does nothing",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1"],
+      "day": {"p1:t1": 600},
+      "expect_day": {"p1:t1": 600}, "changed": null
+    },
+    {
+      "name": "the cap counts all lines, time off included",
+      "op": "add", "line": "p2", "task": "general", "picker": ["general"],
+      "day": {"p1:t1": 300, "other:meetings": 120, "timeoff:vacation": 120, "p2:general": 60},
+      "expect_day": {"p1:t1": 300, "other:meetings": 120, "timeoff:vacation": 120, "p2:general": 60},
+      "changed": null
+    },
+    {
+      "name": "a day already over the cap takes no more",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1"],
+      "day": {"p1:t1": 660},
+      "expect_day": {"p1:t1": 660}, "changed": null
+    },
+    {
+      "name": "a smaller cap from the profile",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1"], "cap": 480,
+      "day": {"p1:t1": 480},
+      "expect_day": {"p1:t1": 480}, "changed": null
+    },
+    {
+      "name": "a finer step from the profile",
+      "op": "add", "line": "p1", "task": "t1", "picker": ["t1"], "step": 15,
+      "day": {"p1:t1": 30},
+      "expect_day": {"p1:t1": 45}, "changed": "p1:t1"
+    },
+    {
+      "name": "− removes one step from the selected task",
+      "op": "remove", "line": "p1", "task": "t1", "picker": ["t1", "t2", "general"],
+      "day": {"p1:t1": 120, "p1:t2": 60},
+      "expect_day": {"p1:t1": 60, "p1:t2": 60}, "changed": "p1:t1"
+    },
+    {
+      "name": "− down to zero keeps the cell at zero",
+      "op": "remove", "line": "p1", "task": "t1", "picker": ["t1"],
+      "day": {"p1:t1": 60},
+      "expect_day": {"p1:t1": 0}, "changed": "p1:t1"
+    },
+    {
+      "name": "− falls back to the first task of the line in picker order that has time",
+      "op": "remove", "line": "p1", "task": "general", "picker": ["t1", "t2", "general"],
+      "day": {"p1:t1": 60, "p1:t2": 120},
+      "expect_day": {"p1:t1": 0, "p1:t2": 120}, "changed": "p1:t1"
+    },
+    {
+      "name": "− skips tasks with no time when falling back",
+      "op": "remove", "line": "p1", "task": "t1", "picker": ["t1", "t2", "general"],
+      "day": {"p1:general": 180},
+      "expect_day": {"p1:general": 120}, "changed": "p1:general"
+    },
+    {
+      "name": "− on a line with no time does nothing",
+      "op": "remove", "line": "p1", "task": "t1", "picker": ["t1", "t2", "general"],
+      "day": {"p1:t1": 0, "p2:t1": 120},
+      "expect_day": {"p1:t1": 0, "p2:t1": 120}, "changed": null
+    },
+    {
+      "name": "− never goes below zero",
+      "op": "remove", "line": "p1", "task": "t1", "picker": ["t1"],
+      "day": {"p1:t1": 30},
+      "expect_day": {"p1:t1": 0}, "changed": "p1:t1"
+    },
+    {
+      "name": "− on an empty day does nothing",
+      "op": "remove", "line": "p1", "task": "t1", "picker": ["t1"],
+      "day": {},
+      "expect_day": {}, "changed": null
+    },
+    {
+      "name": "− works on a category line like on a project line",
+      "op": "remove", "line": "timeoff", "task": "vacation", "picker": ["vacation", "out_of_office"],
+      "day": {"timeoff:out_of_office": 480},
+      "expect_day": {"timeoff:out_of_office": 420}, "changed": "timeoff:out_of_office"
+    }
+  ]
+}

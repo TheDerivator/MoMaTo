@@ -1,0 +1,453 @@
+/* Administration and Profile: plain forms and tables in the design's visual language (ADM-1 – ADM-8). */
+
+.admin-page {
+  max-width: 1180px;
+}
+
+.admin-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: var(--w-heavy);
+  letter-spacing: -.03em;
+}
+
+.admin-subtitle {
+  margin: 0;
+}
+
+.admin-tabs {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  border-radius: calc(16px * var(--r));
+}
+
+.admin-tab {
+  padding: 8px 14px;
+  border-radius: calc(12px * var(--r));
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: var(--w-medium);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.admin-tab[aria-current="page"] {
+  background: var(--segment-on, var(--surface));
+  font-weight: var(--w-bold);
+  box-shadow: var(--shadow-card);
+}
+
+.admin-card {
+  gap: 14px;
+}
+
+.admin-note {
+  margin: 0;
+  max-width: 720px;
+  font-size: 13px;
+}
+
+.admin-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+
+.admin-toolbar__field {
+  min-width: 260px;
+}
+
+.admin-toolbar__spacer {
+  flex: 1;
+}
+
+.admin-scroll {
+  overflow-x: auto;
+}
+
+/* ------------------------------------------------------------------ tables */
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.admin-table th {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: var(--w-bold);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table--compact td,
+.admin-table--compact th {
+  padding: 8px 10px;
+}
+
+.admin-table__when {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-table__details {
+  max-width: 420px;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+}
+
+.admin-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-person__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-person__name {
+  color: var(--ink);
+  font-weight: var(--w-semibold);
+  text-decoration: none;
+}
+
+.admin-person__name:hover {
+  text-decoration: underline;
+}
+
+.admin-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.admin-chip {
+  padding: 2px 8px;
+  border-radius: var(--rp);
+  background: oklch(var(--l930) calc(.02 * var(--c)) var(--h));
+  font-size: 11.5px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+}
+
+.admin-status {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: var(--rp);
+  background: oklch(var(--l930) calc(.04 * var(--c)) 155);
+  font-size: 11.5px;
+  font-weight: var(--w-bold);
+  white-space: nowrap;
+}
+
+.admin-status--suspended {
+  background: oklch(var(--l930) calc(.06 * var(--c)) 75);
+}
+
+.admin-status--deactivated {
+  background: oklch(var(--l930) calc(.02 * var(--c)) var(--h));
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ the person's page */
+
+.admin-person-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+
+.admin-person-head__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: var(--w-bold);
+  letter-spacing: -.02em;
+}
+
+.admin-person-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.admin-person-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 18px;
+  margin: 0;
+  font-size: 13.5px;
+}
+
+.admin-facts dt {
+  color: var(--muted);
+}
+
+.admin-facts dd {
+  margin: 0;
+}
+
+.admin-form {
+  gap: 14px;
+}
+
+.admin-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.admin-pair__button {
+  justify-self: start;
+}
+
+.admin-pattern {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.admin-pattern__days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-pattern__day {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 64px;
+  font-size: 12px;
+  font-weight: var(--w-semibold);
+}
+
+.admin-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+
+.admin-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-inline--form {
+  align-items: flex-end;
+}
+
+.admin-inline__input {
+  width: 90px;
+}
+
+.admin-inline__go {
+  align-self: flex-end;
+}
+
+.admin-assignments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-assignment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13.5px;
+}
+
+.admin-secret {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: calc(14px * var(--r));
+  background: oklch(var(--l975) calc(.02 * var(--c)) var(--h));
+}
+
+.admin-secret__value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 15px;
+  font-weight: var(--w-bold);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.admin-secret__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ------------------------------------------------------------------ the org tree editor */
+
+.org-tree {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.org-row {
+  padding: 6px 0 6px calc(var(--depth, 0) * 28px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.org-row__line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.org-row__name {
+  flex: 1 1 220px;
+  min-width: 180px;
+  max-width: 360px;
+}
+
+.org-row__department {
+  white-space: nowrap;
+}
+
+.org-row__tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.org-row__parent {
+  width: 200px;
+}
+
+.org-row__add {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  max-width: 460px;
+}
+
+/* ------------------------------------------------------------------ roles */
+
+.admin-role-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.admin-role-head__name {
+  margin: 0;
+}
+
+.admin-role-head__input {
+  max-width: 280px;
+}
+
+.admin-permissions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 8px 20px;
+}
+
+.admin-permission {
+  align-items: flex-start;
+  font-size: 13px;
+}
+
+.admin-role-head__name,
+.admin-card .admin-role-head__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: var(--w-bold);
+  letter-spacing: -.01em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ API tokens */
+
+.token-scopes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.token-scope {
+  align-items: flex-start;
+}
+
+.token-command {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.token-command__code {
+  flex: 1 1 260px;
+  padding: 6px 10px;
+  border-radius: calc(10px * var(--r));
+  background: oklch(var(--l975) calc(.02 * var(--c)) var(--h));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}

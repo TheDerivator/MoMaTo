@@ -13,20 +13,20 @@ D-002): when in doubt, do what TaskBoard does.
 
 | #   | Milestone                                              | Status        |
 |-----|--------------------------------------------------------|---------------|
-| M0  | Foundations and guardrails                             | ☐ not started |
-| M1  | Domain rules, persistence, profile, sample data        | ☐ not started |
-| M2  | Identity and access control                            | ☐ not started |
-| M3  | Projects API                                           | ☐ not started |
-| M4  | Frontend shell, design system, Projects list           | ☐ not started |
-| M5  | Project page: Overview, Remarks, Logbook, All details  | ☐ not started |
-| M6  | Project page: Planning, People & days                  | ☐ not started |
-| M7  | My timesheet                                           | ☐ not started |
-| M8  | People planning                                        | ☐ not started |
-| M9  | Action plans                                           | ☐ not started |
-| M10 | Administration and profile                             | ☐ not started |
-| M11 | Export (proof of concept) and API tokens               | ☐ not started |
-| M12 | Single sign-on                                         | ☐ not started |
-| M13 | Hardening and release                                  | ☐ not started |
+| M0  | Foundations and guardrails                             | ☑ done        |
+| M1  | Domain rules, persistence, profile, sample data        | ☑ done        |
+| M2  | Identity and access control                            | ☑ done        |
+| M3  | Projects API                                           | ☑ done        |
+| M4  | Frontend shell, design system, Projects list           | ☑ done        |
+| M5  | Project page: Overview, Remarks, Logbook, All details  | ☑ done        |
+| M6  | Project page: Planning, People & days                  | ☑ done        |
+| M7  | My timesheet                                           | ☑ done        |
+| M8  | People planning                                        | ☑ done        |
+| M9  | Action plans                                           | ☑ done        |
+| M10 | Administration and profile                             | ☑ done        |
+| M11 | Export (proof of concept) and API tokens               | ☑ done        |
+| M12 | Single sign-on                                         | ☑ done        |
+| M13 | Hardening and release (MS SQL run pending a database)  | ☑ done        |
 
 Legend: ☐ not started · ◐ in progress · ☑ done
 
@@ -47,7 +47,7 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 | Accessibility | axe-playwright-python | every screen, dialog and popover in the four appearance combinations | `tests/e2e` | with e2e |
 | Scale | pytest (`-m scale`) | the budgets of REQUIREMENTS §8.5 on the scale data set | `tests/api`, `tests/e2e` | M13, before releases |
 | MS SQL | API + integration suites with `MOMATO_TEST_DATABASE_URL` | portability on a real SQL Server | | when a database is available |
-| Visual | Playwright screenshots (`-m visual`) | unintended rendering changes | `tests/e2e/visual` | opt-in (M13) |
+| Visual | Playwright screenshots (`-m visual`) | unintended rendering changes | `tests/e2e` (`baselines/`) | opt-in (M13) |
 
 Principles:
 
@@ -86,27 +86,32 @@ decisions in DECISIONS.md; ARCHITECTURE.md updated when the structure changes; C
 
 ### M0 · Foundations and guardrails
 
-- [ ] Dependencies (D-003), runtime: `uv add fastapi uvicorn sqlalchemy alembic pydantic-settings
+- [x] Dependencies (D-003), runtime: `uv add fastapi uvicorn sqlalchemy alembic pydantic-settings
       python-multipart`; development: `uv add --dev pytest pytest-cov hypothesis httpx2 ruff pyright
       import-linter pytest-playwright axe-playwright-python`; MS SQL: `uv add --optional mssql
       pyodbc`. Later milestones add theirs the same way (argon2-cffi in M2, markdown-it-py and nh3
       in M5, xlsxwriter and openpyxl (dev) in M11, pyjwt[crypto] and pyspnego in M12, pillow (dev)
       in M13).
-- [ ] Replace uv init's `main.py` with `app.py` (three lines) and the `momato/` package with its
+- [x] Replace uv init's `main.py` with `app.py` (three lines) and the `momato/` package with its
       layers (`cli, web, api, services, schemas, identity, db, domain`); `python -m momato serve`;
       pyproject description.
-- [ ] `momato/config.py` (`MOMATO_` settings, the app folder's `.env`), `.env.example`, `var/` ignored.
-- [ ] `GET /api/health`; the web layer serves `static/index.html` (placeholder) for app routes.
-- [ ] Tooling configuration in pyproject (TaskBoard's): ruff rules, pyright strict on `momato/`,
+- [x] `momato/config.py` (`MOMATO_` settings, the app folder's `.env`), `.env.example`, `var/` ignored.
+      Settings that belong to a later milestone (profile M1, sessions and admin password M2, SSO
+      M12) are added with the code that uses them.
+- [x] `GET /api/health`; the web layer serves `static/index.html` (placeholder) for app routes.
+- [x] Security headers, the strict CSP (import map allowed by its hash, no inline styles) and
+      response compression, pulled forward from M13 so every screen is built under the policy.
+- [x] Tooling configuration in pyproject (TaskBoard's): ruff rules, pyright strict on `momato/`,
       import-linter contracts (layers; pure domain; routers never touch the database), pytest
       (markers `e2e`, `scale`, `visual`, `requires_sqlite`; warnings are errors; e2e off by default),
       coverage.
-- [ ] `scripts/check.py` (fix, lint, format, types, contracts, code map, trace, pytest with coverage
+- [x] `scripts/check.py` (fix, lint, format, types, contracts, code map, trace, pytest with coverage
       gates, `node --test`), `scripts/gen_codemap.py`, `scripts/trace.py`.
-- [ ] Test skeleton: `tests/{unit,integration,api,architecture,e2e,js,fixtures}`, conftest with
-      settings and database fixtures, the statement counter, e2e live-server fixture and helpers
-      (no request to another origin, no console error, axe).
-- [ ] `CLAUDE.md`, `README.md`, `docs/ARCHITECTURE.md`, `docs/CODEMAP.md`.
+- [x] Test skeleton: `tests/{unit,integration,api,architecture,e2e,js,fixtures}`, conftest with
+      settings fixtures and the MS SQL parameter guard, the statement counter, e2e live-server
+      fixture and helpers (no request to another origin, no console error, axe). The template
+      database fixtures arrive with the schema in M1.
+- [x] `CLAUDE.md`, `README.md`, `docs/ARCHITECTURE.md`, `docs/CODEMAP.md`.
 
 **Acceptance gate**: `check.py` is green; an API test gets 200 from `/api/health`; architecture
 tests: contracts hold, `app.py` is a thin entrypoint, every file describes itself, the code map is
@@ -118,22 +123,22 @@ placeholder page without contacting another origin.
 
 Delivers REQUIREMENTS §4 (R4.1 – R4.12), §5 (without identity), §7; DT-2.
 
-- [ ] Pure domain modules: `calendar` (ISO weeks, working days, quarters, spent buckets, timeline
+- [x] Pure domain modules: `calendar` (ISO weeks, working days, quarters, spent buckets, timeline
       windows), `capacity` (work patterns, available time, availability, load and compare classes),
       `planning` (planned in a period, weekly planned hours, project days, expected by today),
       `tasks` (status, slipped, effective end, timeline text), `timesheet` (booking rules in
       minutes, week states and their texts), `numbering`, `logbook` (old/new core values →
       entries), `fields` (profile model, value validation per field type).
-- [ ] Deployment profile: TOML format, `momato/profiles/default.toml` (the design's cards and
+- [x] Deployment profile: TOML format, `momato/profiles/default.toml` (the design's cards and
       fields, the other-work and time-off categories, the task template, `hidden_statuses`, the
       numbers), loader and validation at startup, `MOMATO_PROFILE`.
-- [ ] Database: metadata naming convention, `UTCDateTime`, Unicode and Numeric types with MS SQL
+- [x] Database: metadata naming convention, `UTCDateTime`, Unicode and Numeric types with MS SQL
       variants; the models of §5 (the `users` table with its person columns; sign-in columns and
       identity tables come in M2); the hot-path indexes; SQLite foreign keys, WAL, busy timeout,
       `BEGIN IMMEDIATE` for write sessions; `app_locks`; `db/ids.py` (long id lists as integers in
       the SQL); Alembic environment and initial migration; `db/migrate.py`, `python -m momato db
       upgrade`, migration at startup.
-- [ ] **Sample data that looks well used** (D-037): curated JSON (org tree, people, project names,
+- [x] **Sample data that looks well used** (D-037): curated JSON (org tree, people, project names,
       plans, remarks) plus a seeded generator (dates, members, tasks and progress, planned days,
       time entries, logbook history):
   - TaskBoard's departments and people (STL › Quality, Process, Maintenance; R&D › Coatings; Anna
@@ -150,9 +155,9 @@ Delivers REQUIREMENTS §4 (R4.1 – R4.12), §5 (without identity), §7; DT-2.
   - two years of time entries for everyone (project work, other work, vacation weeks), and Anna
     Claes's week 41 as in the design: four project lines planned at 14, 10, 8 and 4 h plus Other
     work at 4 h, Monday and Tuesday full (16 h).
-  - `python -m momato seed [--sample [--demo-password …]]`, idempotent, dates shifted to today
-    (D-027).
-- [ ] Shared fixture tables: `week_states.json`, `booking.json`, `load_classes.json`,
+  - `python -m momato seed [--sample]`, idempotent, dates shifted to today (D-027).
+    `--demo-password` (every sample person can sign in) arrives with the sign-in columns in M2.
+- [x] Shared fixture tables: `week_states.json`, `booking.json`, `load_classes.json`,
       `compare_classes.json`, `task_status.json`, `buckets.json`, `formatting.json`.
 
 **Acceptance gate**:
@@ -179,16 +184,17 @@ Delivers REQUIREMENTS §4 (R4.1 – R4.12), §5 (without identity), §7; DT-2.
 
 Delivers AUTH-1, AUTH-2, AUTH-4, AUTH-5 (server), REQUIREMENTS §6.
 
-- [ ] Port TaskBoard's identity layer (D-004) with its tests, merged into the `users` table
+- [x] Port TaskBoard's identity layer (D-004) with its tests, merged into the `users` table
       (person = user, D-012): system accounts `admin` and `anonymous`, sign-in columns, server-side
       sessions, CSRF, argon2 (`uv add argon2-cffi`), login throttling, forced password change,
       initial admin password, audit log, provisioning, the `IdentityProvider` protocol (providers
       in M12), the lockout guard. Models and migration.
-- [ ] MoMaTo's permission catalog and built-in roles (Viewer, Project administrator, Hours viewer,
+- [x] MoMaTo's permission catalog and built-in roles (Viewer, Project administrator, Hours viewer,
       Administrator); scopes global, org node and own department; default grants for signed-in
       people and anonymous (D-013); implicit coordinator and member rights (D-014); `AccessPolicy`
       with `can`, the visible-projects filter and the visible-time people filter. Seeded at start.
-- [ ] Endpoints: login, logout, me, change password. `docs/AUTH.md`.
+- [x] Endpoints: login, logout, me, change password. `docs/AUTH.md`. `python -m momato create-admin`;
+      `seed --demo-password` (every sample person can sign in).
 
 **Acceptance gate**: a policy matrix test (Viewer / Project administrator on a department /
 Project administrator globally / Hours viewer / Administrator / coordinator / member / anonymous /
@@ -205,21 +211,21 @@ next request; removing the last administrator is refused.
 Delivers the server side of SH-6, SH-12, PL-1 – PL-8, PP-1 – PP-3, PP-6, OV-4, PG-4 – PG-6,
 PD-3 – PD-5, LB-1, DT-1 – DT-3, AP-1, AP-7, AP-8, ADM-7, SH-11.
 
-- [ ] `GET /api/bootstrap`: me (person, permissions), today, org tree, people, statuses,
+- [x] `GET /api/bootstrap`: me (person, permissions), today, org tree, people, statuses,
       priorities, plans, the profile (cards, fields, choices, categories, hidden statuses); never
       projects.
-- [ ] Projects list: filters (`node`, `status`, `q`, `name`, `coordinator`), hidden statuses left
+- [x] Projects list: filters (`node`, `status`, `q`, `name`, `coordinator`), hidden statuses left
       out unless asked for, order by number descending, **keyset pages of 50** (`after=<number>`),
       the total; a counts endpoint (per status, and per org node rolled up the tree, for the same
       filters); the neighbours and position of a project within a filtered list.
-- [ ] Search endpoints for pickers: projects (number, name; optionally bookable only) and people.
-- [ ] Projects: get by number, create (number assigned, optional task template), update core and
+- [x] Search endpoints for pickers: projects (number, name; optionally bookable only) and people.
+- [x] Projects: get by number, create (number assigned, optional task template), update core and
       detail fields (version, 409), members add/remove, plan link/unlink, delete.
-- [ ] Logbook entries written by the services for the core fields; `GET /api/projects/{n}/log?filter=`.
-- [ ] Tasks: list, create, update, move, delete. Planned days: the person × quarter grid of a
+- [x] Logbook entries written by the services for the core fields; `GET /api/projects/{n}/log?filter=`.
+- [x] Tasks: list, create, update, move, delete. Planned days: the person × quarter grid of a
       project (planned and logged), set one cell.
-- [ ] Action plans: list, create, update, delete; plan overview (groups and aggregates) and feed.
-- [ ] Domain errors mapped to 404 / 409 / 422 in one place; OpenAPI at `/api/docs`.
+- [x] Action plans: list, create, update, delete; plan overview (groups and aggregates) and feed.
+- [x] Domain errors mapped to 404 / 409 / 422 in one place; OpenAPI at `/api/docs`.
 
 **Acceptance gate**: API tests for every endpoint with its 401 / 403 / 404 (an invisible project is
 404) / 409 / 422 cases. Paging: following `after` from the first page visits every matching project
@@ -241,18 +247,18 @@ leaves out projects the caller can't see.
 Delivers SH-1 – SH-12, PL-1 – PL-8, APP-1 – APP-5 (the celebration switch comes in M7), the login
 dialog of AUTH-1.
 
-- [ ] Vendored Preact, hooks and htm; fonts Bricolage Grotesque, Figtree, IBM Plex Sans with
+- [x] Vendored Preact, hooks and htm; fonts Bricolage Grotesque, Figtree, IBM Plex Sans with
       their licences; `static/vendor/README.md` (versions, sources).
-- [ ] `css/tokens.css`: the design's lightness maps (light / dark), chroma multiplier, hues, radius
+- [x] `css/tokens.css`: the design's lightness maps (light / dark), chroma multiplier, hues, radius
       scale and fonts as custom properties for `[data-mode] × [data-look]` (`playful`, `boring`);
       components never hard-code colours. `theme-boot.js` applies the stored appearance before the
       first paint.
-- [ ] Shell: tree pane (full and rail) with server counts, main menu (full and rail), top bar
+- [x] Shell: tree pane (full and rail) with server counts, main menu (full and rail), top bar
       (server search, Ctrl K, date), breadcrumb title with child menu, Appearance popover, login
       dialog, toasts, router with base path, API client with CSRF header, narrow-screen rails.
-- [ ] Projects list with paging while scrolling and "Load more"; the New project dialog with
+- [x] Projects list with paging while scrolling and "Load more"; the New project dialog with
       server-side pickers.
-- [ ] Pure modules with tests: `lib/format.js`, `lib/tree.js` (branches, breadcrumb),
+- [x] Pure modules with tests: `lib/format.js`, `lib/tree.js` (branches, breadcrumb),
       `lib/timeline.js` (positions in a window), `lib/routes.js`, `lib/appearance.js`,
       `lib/status.js`, `lib/paging.js` (merging pages, resetting on filter changes).
 
@@ -273,15 +279,15 @@ its popovers in all four appearances.
 
 Delivers PP-1 – PP-7, OV-1, OV-3, OV-4, RM-1 – RM-5, LB-2 – LB-4, DT-1 – DT-3 (UI).
 
-- [ ] Frame: top line with ‹ › through the list, badges, status menu, plan checklist, inline title,
+- [x] Frame: top line with ‹ › through the list, badges, status menu, plan checklist, inline title,
       tabs in the URL, read-only mode, the 409 message.
-- [ ] Overview (goal, latest remark, coordinator / people / dates / department / priority card),
+- [x] Overview (goal, latest remark, coordinator / people / dates / department / priority card),
       Logbook, All details with an editor per field type.
-- [ ] Remarks: port TaskBoard's conversation (`uv add markdown-it-py nh3`): server-side Markdown and
+- [x] Remarks: port TaskBoard's conversation (`uv add markdown-it-py nh3`): server-side Markdown and
       sanitizing, posts and revisions, image uploads as drafts with cleanup, attachment access by
       project visibility, composer with Write / Preview and toolbar, paste and drop, lightbox; plus
       replies, the template chip, `#number` links and `@name` highlighting.
-- [ ] Pure modules with tests: `lib/logbook.js` (filter groups, hues), `lib/fields.js` (display
+- [x] Pure modules with tests: `lib/logbook.js` (filter groups, hues), `lib/fields.js` (display
       and parsing per field type).
 
 **Acceptance gate**: TaskBoard's conversation tests, ported: sanitizer tests with XSS vectors,
@@ -301,12 +307,12 @@ the second gets "Someone else changed this project"; axe on every tab in all fou
 
 Delivers PG-1 – PG-6, PD-1 – PD-5, OV-2, OV-5.
 
-- [ ] Gantt: quarter axis, today pill and line, planned bars with progress, revised-end extension,
+- [x] Gantt: quarter axis, today pill and line, planned bars with progress, revised-end extension,
       milestones, colours; the task dialog (add, edit, move, delete).
-- [ ] People & days grid (cells, bars, upcoming, totals, "Also booked"), cell editing, adding and
+- [x] People & days grid (cells, bars, upcoming, totals, "Also booked"), cell editing, adding and
       removing people.
-- [ ] Overview "Where we are" and the Days card on real data.
-- [ ] Pure modules with tests: `lib/gantt.js` (axis, positions, bar geometry), `lib/days.js`.
+- [x] Overview "Where we are" and the Days card on real data.
+- [x] Pure modules with tests: `lib/gantt.js` (axis, positions, bar geometry), `lib/days.js`.
 
 **Acceptance gate**: JS geometry tests against hand-computed cases (a project across a year
 boundary, a task beyond the project end, today outside the range, a slipped milestone);
@@ -319,14 +325,14 @@ hours asks first; 12.5 days in a cell update the row total and the Days card and
 
 Delivers TS-1 – TS-15, the week card of SH-2, the celebration switch of APP-1.
 
-- [ ] API: `GET /api/timesheet/{week}` (lines, tasks, planned hours, minutes per task and day, day
+- [x] API: `GET /api/timesheet/{week}` (lines, tasks, planned hours, minutes per task and day, day
       targets, state), `PUT /api/timesheet/{week}/cells` (absolute minutes), `POST …/submit`; the
       current week's summary in the bootstrap; the rules of R4.8 enforced.
-- [ ] Desktop: header, week navigation, summary card, fill-up cards with their animation, task
+- [x] Desktop: header, week navigation, summary card, fill-up cards with their animation, task
       picker, − and +1 h, the Other work and Time off cards, "+ Add project".
-- [ ] Phone width: one column, wrapping summary (TS-12); the week card in the menu and its rail
+- [x] Phone width: one column, wrapping summary (TS-12); the week card in the menu and its rail
       version; the celebration and its switch.
-- [ ] Pure modules with tests: `lib/timesheet.js` (booking rules and week states, mirroring the
+- [x] Pure modules with tests: `lib/timesheet.js` (booking rules and week states, mirroring the
       domain, independent of the layout) and the save queue (coalescing, rollback).
 
 **Acceptance gate**: Python and JS pass the same `week_states.json` and `booking.json`; the API
@@ -346,13 +352,13 @@ with a toast; axe in all four appearances.
 
 Delivers PPL-1 – PPL-7, the people counts of SH-3.
 
-- [ ] API `GET /api/people-planning?node=&mode=&period=`: rows, buckets, cells (value, capacity or
+- [x] API `GET /api/people-planning?node=&mode=&period=`: rows, buckets, cells (value, capacity or
       planned, class), the hidden-people count; `GET …/people-planning/{person}` for the drill-down
       lines (member projects, non-member bookings, other work, time off, other projects).
       Aggregation in SQL (`GROUP BY`), bucket boundaries computed in Python.
-- [ ] UI: header with mode and period switches, range and legend; table with the person filter,
+- [x] UI: header with mode and period switches, range and legend; table with the person filter,
       rows expanding with lines loaded on demand, colours, totals; drill-down links to People & days.
-- [ ] Pure module with tests: `lib/planning.js` (cell presentation from the classes).
+- [x] Pure module with tests: `lib/planning.js` (cell presentation from the classes).
 
 **Acceptance gate**: API tests: the time-privacy matrix (own time always visible; a colleague
 through the default department grant; a department head with a global Hours viewer role; a viewer
@@ -369,10 +375,10 @@ on People & days; the person filter and the tree branch filter the rows; axe.
 
 Delivers AP-1 – AP-8 (UI), the plan counts of SH-3.
 
-- [ ] UI: plan tabs, meta line, description, plan dialog (new, edit, delete), totals card,
+- [x] UI: plan tabs, meta line, description, plan dialog (new, edit, delete), totals card,
       timeline table grouped by top-level department with collapsible groups, selection in the URL,
       summary card and feed, "+ Add project" (server-side search).
-- [ ] Pure module with tests: `lib/plans.js` (grouping with the owner first, aggregate spans).
+- [x] Pure module with tests: `lib/plans.js` (grouping with the owner first, aggregate spans).
 
 **Acceptance gate**: JS tests of grouping and aggregates on sample rows; e2e: selecting a
 department shows only the plans it owns; a branch without plans shows "No action plans owned by
@@ -385,12 +391,12 @@ no "+ New plan"; projects the viewer can't see are absent from rows, totals and 
 
 Delivers ADM-1 – ADM-8, AUTH-4, AUTH-5 (UI).
 
-- [ ] Org tree editor (add, rename, move, reorder, department flag, delete when unused).
-- [ ] People: one page for a person's data (`org.manage`: name, job title, org node, work pattern,
+- [x] Org tree editor (add, rename, move, reorder, department flag, delete when unused).
+- [x] People: one page for a person's data (`org.manage`: name, job title, org node, work pattern,
       hue, availability per year, deactivate) and sign-in (`users.manage`: password, SSO
       preparation, suspend); roles and assignments (including the own-department scope and the
       default grants); audit log viewer.
-- [ ] Profile page: own data and availability (read only), change password.
+- [x] Profile page: own data and availability (read only), change password.
 
 **Acceptance gate**: API tests for every administration endpoint (403 without the right permission,
 no cycles in the tree, deleting a node in use refused, the lockout guard); e2e: flagging a node as a
@@ -403,9 +409,9 @@ pickers but keeps their history; axe on every administration page.
 
 Delivers EXP-1 – EXP-4, TOK-1 – TOK-4.
 
-- [ ] `uv add xlsxwriter`, `uv add --dev openpyxl` (to read exports in tests); streamed CSV and XLSX
+- [x] `uv add xlsxwriter`, `uv add --dev openpyxl` (to read exports in tests); streamed CSV and XLSX
       of the project list (Projects) and of time entries (People planning).
-- [ ] API tokens, ported from TaskBoard (its D-097): model and migration, Profile UI, Bearer
+- [x] API tokens, ported from TaskBoard (its D-097): model and migration, Profile UI, Bearer
       principal, scope narrowing, "via" marks, `GET /api/agent-guide`.
 
 **Acceptance gate**: each export holds the same rows and numbers as its screen for the sample; CSV
@@ -420,7 +426,7 @@ is shown once, works, and stops working after revoking.
 
 Delivers AUTH-3.
 
-- [ ] `uv add "pyjwt[crypto]" pyspnego`; port TaskBoard's OIDC provider (Entra ID), Windows sign-in
+- [x] `uv add "pyjwt[crypto]" pyspnego`; port TaskBoard's OIDC provider (Entra ID), Windows sign-in
       (Negotiate), trusted header, forwarded-header handling, matching prepared people, group
       mappings with their administration page, `serve` TLS options; AUTH.md sections.
 
@@ -433,21 +439,28 @@ route exists; an e2e sign-in round trip through the fake IdP.
 
 Delivers REQUIREMENTS §8 and closes the traceability.
 
-- [ ] Strict CSP (the import map allowed by its hash), security headers, compression.
-- [ ] Accessibility pass: a keyboard path for every interaction; one consolidated axe suite over
-      every screen, dialog and popover in the four appearances.
-- [ ] Scale data generator (5,000 projects, 500 people, two years of time); scale tests for the
-      budgets of §8.5 (API and browser).
+- [x] Strict CSP (the import map allowed by its hash), security headers, compression: built in M0;
+      here: no console errors under the CSP on any screen (`tests/e2e/test_tour.py`), and the
+      headers on every response kind (`tests/api/test_security_headers.py`).
+- [x] Accessibility pass: a keyboard path for every interaction (`tests/e2e/test_polish.py`,
+      `test_tour.py`); the axe suite over every screen, dialog and popover in the four appearances
+      (`tests/e2e/test_accessibility.py`, extended by every UI milestone).
+- [x] Scale data generator (5,000 projects, 500 people, two years of time: `tests/scale.py`); scale
+      tests for the budgets of §8.5 (`tests/api/test_scale.py`, `tests/e2e/test_scale.py`, `-m scale`).
 - [ ] MS SQL: the API and integration suites against `MOMATO_TEST_DATABASE_URL` (needs a SQL Server
-      database, like TaskBoard's M10).
-- [ ] Visual regression baselines (`-m visual`, `uv add --dev pillow`): one screenshot per screen and
-      appearance, compared with a tolerance, updated deliberately.
-- [ ] `docs/OPERATIONS.md`: Windows server (service, IIS or Windows sign-in, MS SQL), Linux demo
-      (systemd, Caddy or nginx), upgrades, the manual checklist.
+      database, like TaskBoard's M10). The suites accept the URL and `docs/OPERATIONS.md` has the
+      commands; **the run itself is pending** until a database is available (D-062).
+- [x] Visual regression baselines (`-m visual`, `uv add --dev pillow`): one screenshot per screen and
+      appearance in `tests/e2e/baselines`, compared with a tolerance, updated deliberately.
+- [x] `docs/OPERATIONS.md`: Windows server (service, IIS or Windows sign-in, MS SQL), Linux demo
+      (systemd, Caddy or nginx), upgrades, backups, security checklist, the manual checklist.
 
 **Acceptance gate**: the full suite passes on SQLite, and on MS SQL once a database is available;
 `trace.py --strict` finds a test for every requirement and rule; axe reports no violations; no
 console errors under the CSP; the scale budgets are met; the coverage gates hold.
+
+**Outcome**: the SQLite gate is met (full suite, `trace.py --strict`, axe, console tour, `-m scale`,
+`-m visual`). The MS SQL half of the gate stays open and is the only unfinished item of the plan.
 
 ---
 

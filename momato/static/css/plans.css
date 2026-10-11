@@ -1,0 +1,535 @@
+/* Action plans: tabs, totals, the timeline by department, summary and feed (AP-1 – AP-8). */
+
+.plans-page {
+  gap: 18px;
+}
+
+.plan-tabs {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  border-radius: calc(16px * var(--r));
+}
+
+.plan-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: calc(12px * var(--r));
+  background: transparent;
+  color: var(--ink);
+  white-space: nowrap;
+  font-size: 13.5px;
+  font-weight: var(--w-medium);
+}
+
+.plan-tab[aria-pressed="true"] {
+  background: var(--segment-on, var(--surface));
+  font-weight: var(--w-bold);
+  box-shadow: var(--shadow-card);
+}
+
+.plan-tab__count {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-empty {
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.plan-empty__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--w-bold);
+}
+
+.plan-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 760px;
+}
+
+.plan-meta {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.plan-meta b {
+  color: oklch(var(--l350) calc(.02 * var(--c)) var(--h));
+}
+
+.plan-intro__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.plan-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: var(--w-bold);
+  letter-spacing: -.02em;
+}
+
+.plan-description {
+  margin: 0;
+  color: oklch(var(--l450) calc(.02 * var(--c)) var(--h));
+  text-wrap: pretty;
+}
+
+/* ------------------------------------------------------------------ totals */
+
+.plan-totals {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 18px 22px;
+}
+
+.plan-totals__figure {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.plan-totals__number {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: var(--w-heavy);
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-totals__meter {
+  flex: 1;
+  min-width: 240px;
+}
+
+.plan-totals__note {
+  font-size: 12.5px;
+}
+
+.plan-meter {
+  position: relative;
+  display: block;
+  height: 5px;
+  border-radius: calc(3px * var(--r));
+  background: oklch(var(--l930) calc(.01 * var(--c)) var(--h));
+}
+
+.plan-meter--thick {
+  height: 12px;
+  border-radius: calc(6px * var(--r));
+  background: oklch(var(--l950) calc(.008 * var(--c)) var(--h));
+}
+
+.plan-meter__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: oklch(var(--l700) calc(.13 * var(--c)) 155);
+}
+
+.plan-meter__tick {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--ink);
+}
+
+.plan-meter--thick .plan-meter__tick {
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  border-radius: calc(2px * var(--r));
+}
+
+/* ------------------------------------------------------------------ body */
+
+.plan-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.plan-body__main {
+  flex: 999 1 640px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-body__side {
+  flex: 1 1 300px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-timeline {
+  padding: 0;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.plan-timeline__table {
+  min-width: 640px;
+}
+
+.plan-timeline__row {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr) 130px;
+  align-items: center;
+}
+
+.plan-timeline__row--head {
+  font-size: 12px;
+  font-weight: var(--w-bold);
+  color: var(--muted);
+}
+
+.plan-timeline__label {
+  padding: 12px 18px;
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.plan-timeline__label--days {
+  padding: 12px 14px;
+}
+
+.plan-timeline__years {
+  display: flex;
+  border-left: 1px solid var(--rule);
+}
+
+.plan-timeline__year {
+  flex: 1;
+  padding: 12px 8px;
+  border-left: 1px solid var(--rule);
+}
+
+.plan-timeline__year:first-child {
+  border-left: none;
+}
+
+.plan-group {
+  border-top: 1px solid var(--ring);
+}
+
+.plan-group__head {
+  background: oklch(var(--l985) calc(.006 * var(--c)) var(--h));
+}
+
+.plan-group__toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 11px 14px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  min-width: 0;
+}
+
+.plan-group__chevron {
+  width: 14px;
+  font-size: 10px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.plan-group__name {
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: var(--w-heavy);
+  overflow-wrap: anywhere;
+}
+
+.plan-group__count {
+  padding: 1px 7px;
+  border-radius: var(--rp);
+  background: oklch(var(--l930) calc(.02 * var(--c)) var(--h));
+  font-size: 11px;
+  font-weight: var(--w-bold);
+  color: oklch(var(--l450) calc(.06 * var(--c)) var(--h));
+}
+
+.plan-group__owner {
+  padding: 1px 7px;
+  border-radius: var(--rp);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: 10.5px;
+  font-weight: var(--w-bold);
+  white-space: nowrap;
+}
+
+.plan-group__dots {
+  display: flex;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.plan-group__dots .dot {
+  width: 7px;
+  height: 7px;
+}
+
+.plan-lane {
+  position: relative;
+  align-self: stretch;
+  min-height: 44px;
+  border-left: 1px solid var(--rule);
+}
+
+.plan-lane--grid {
+  min-height: 60px;
+  background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px);
+  background-size: var(--month) 100%;
+}
+
+.plan-lane__span {
+  position: absolute;
+  top: 50%;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: calc(3px * var(--r));
+  background: oklch(var(--l860) calc(.04 * var(--c)) var(--h));
+}
+
+.plan-lane__bar {
+  position: absolute;
+  top: 50%;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: calc(7px * var(--r));
+  background: oklch(var(--l740) calc(.14 * var(--c)) var(--hue));
+}
+
+.plan-lane__today {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+}
+
+.plan-days {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 14px;
+}
+
+.plan-days__text {
+  font-size: 12px;
+  font-weight: var(--w-heavy);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.plan-project {
+  border-top: 1px solid var(--rule);
+}
+
+.plan-project:hover,
+.plan-project--on {
+  background: oklch(var(--l975) calc(.015 * var(--c)) var(--h));
+}
+
+.plan-project--on {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.plan-project__button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  min-width: 0;
+  padding: 11px 18px 11px 36px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+
+.plan-project__name {
+  max-width: 100%;
+  font-size: 13.5px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plan-adder {
+  align-self: flex-start;
+}
+
+.plan-menu .popover {
+  left: 0;
+  right: auto;
+  min-width: 170px;
+}
+
+/* ------------------------------------------------------------------ side */
+
+.plan-summary {
+  box-shadow: 0 1px 2px oklch(.3 .03 285 / .05), 0 0 0 1.5px oklch(var(--l800) calc(.07 * var(--c)) var(--h));
+}
+
+.plan-summary__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-summary__spacer {
+  flex: 1;
+}
+
+.plan-summary__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--w-bold);
+  line-height: 1.2;
+  letter-spacing: -.015em;
+}
+
+.plan-summary__who {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.plan-summary__goal {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: oklch(var(--l400) calc(.02 * var(--c)) var(--h));
+}
+
+.plan-summary__days {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.plan-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.plan-feed {
+  padding: 18px;
+  gap: 4px;
+}
+
+.plan-feed .card__title {
+  padding: 0 6px 8px;
+}
+
+.plan-feed__item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: calc(14px * var(--r));
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.plan-feed__item:hover {
+  background: oklch(var(--l975) calc(.008 * var(--c)) var(--h));
+}
+
+.plan-feed__item > .avatar {
+  flex: none;
+}
+
+.plan-feed__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.plan-feed__who {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.plan-feed__who b {
+  color: var(--ink);
+}
+
+.plan-feed__project {
+  font-size: 12px;
+  font-weight: var(--w-semibold);
+  color: oklch(var(--l500) calc(.12 * var(--c)) var(--h));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plan-feed__excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.plan-feed__change {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------------ the plan dialog */
+
+.swatches {
+  display: flex;
+  gap: 8px;
+}
+
+.swatch-button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: calc(10px * var(--r));
+  background: oklch(var(--l700) calc(.13 * var(--c)) var(--hue));
+  box-shadow: inset 0 0 0 2px var(--surface);
+}
+
+.swatch-button--on {
+  outline: 2.5px solid var(--ink);
+  outline-offset: 2px;
+}

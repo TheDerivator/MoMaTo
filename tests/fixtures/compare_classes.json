@@ -1,0 +1,19 @@
+{
+  "description": "R4.5 compare classes: spent against planned (any unit). s = p = 0 empty; p = 0 unplanned; s/p > 1.15 over; s/p < 0.85 under; otherwise on track.",
+  "cases": [
+    {"spent": 0, "planned": 0, "class": "empty"},
+    {"spent": 5, "planned": 0, "class": "unplanned"},
+    {"spent": 0, "planned": 10, "class": "under"},
+    {"spent": 100, "planned": 100, "class": "on_track"},
+    {"spent": 115, "planned": 100, "class": "on_track"},
+    {"spent": 116, "planned": 100, "class": "over"},
+    {"spent": 85, "planned": 100, "class": "on_track"},
+    {"spent": 84, "planned": 100, "class": "under"},
+    {"spent": 23, "planned": 20, "class": "on_track"},
+    {"spent": 24, "planned": 20, "class": "over"},
+    {"spent": 17, "planned": 20, "class": "on_track"},
+    {"spent": 16, "planned": 20, "class": "under"},
+    {"spent": 1, "planned": 1000, "class": "under"},
+    {"spent": 2000, "planned": 1, "class": "over"}
+  ]
+}

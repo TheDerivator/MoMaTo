@@ -1,0 +1,123 @@
+/* Design tokens: the design's lightness maps, chroma multiplier, hues, radii and fonts as custom
+   properties for [data-mode] light/dark x [data-look] playful/boring (APP-3). Components use the
+   semantic tokens below and never hard-code a colour.
+
+   Colours are OKLCH built from a lightness step (remapped in dark mode), a chroma that the look
+   scales (--c), and the brand or warm hue. A few steps differ from the design's raw values where
+   the design misses WCAG 2.1 AA (APP-4); see docs/DECISIONS.md D-048. */
+
+:root {
+  /* lightness steps, light mode (the design's TH_LIGHT) */
+  --l1000: 1; --l990: .99; --l985: .985; --l982: .982; --l980: .98; --l975: .975; --l970: .97;
+  --l965: .965; --l962: .962; --l960: .96; --l955: .955; --l950: .95; --l948: .948; --l940: .94;
+  --l935: .935; --l930: .93; --l920: .92; --l910: .91; --l900: .9; --l890: .89; --l880: .88;
+  --l860: .86; --l850: .85; --l840: .84; --l800: .8; --l780: .78; --l760: .76; --l750: .75;
+  --l740: .74; --l720: .72; --l700: .7; --l680: .68; --l650: .65; --l620: .62; --l600: .6;
+  --l550: .55; --l520: .52; --l500: .5; --l450: .45; --l420: .42; --l400: .4; --l380: .38;
+  --l350: .35; --l270: .27;
+
+  /* look: playful */
+  --c: 1;
+  --h: 285;
+  --hw: 75;
+  --r: 1;
+  --rp: 999px;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, sans-serif;
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 650;
+  --w-bold: 700;
+  --w-heavy: 750;
+
+  /* surfaces that are not a lightness step */
+  --surface: #fff;
+  --segment-on: #fff;
+  --on-ink: #fff;
+}
+
+:root[data-mode="dark"] {
+  --l1000: .22; --l990: .23; --l985: .24; --l982: .16; --l980: .24; --l975: .245; --l970: .25;
+  --l965: .25; --l962: .19; --l960: .26; --l955: .27; --l950: .27; --l948: .2; --l940: .28;
+  --l935: .29; --l930: .3; --l920: .3; --l910: .33; --l900: .34; --l890: .36; --l880: .36;
+  --l860: .38; --l850: .4; --l840: .42; --l800: .48; --l780: .5; --l760: .64; --l750: .62;
+  --l740: .64; --l720: .72; --l700: .7; --l680: .68; --l650: .67; --l620: .66; --l600: .66;
+  --l550: .7; --l520: .72; --l500: .74; --l450: .78; --l420: .8; --l400: .82; --l380: .84;
+  --l350: .86; --l270: .93;
+  --surface: oklch(.22 .012 var(--h));
+  --segment-on: oklch(.36 .02 285);
+  --on-ink: oklch(.18 .01 285);
+}
+
+:root[data-look="boring"] {
+  --c: .55;
+  --h: 255;
+  --hw: 255;
+  --r: .3;
+  --rp: 6px;
+  --font-display: "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  /* about 100 lighter than the playful weights */
+  --w-regular: 400;
+  --w-medium: 400;
+  --w-semibold: 500;
+  --w-bold: 600;
+  --w-heavy: 600;
+}
+
+/* ------------------------------------------------------------------ semantic tokens */
+
+:root {
+  --page: oklch(var(--l982) calc(.006 * var(--c)) var(--hw));
+  --menu: oklch(var(--l962) calc(.012 * var(--c)) var(--hw));
+  --menu-border: oklch(var(--l920) calc(.01 * var(--c)) var(--hw));
+  --tree: oklch(var(--l948) calc(.016 * var(--c)) var(--hw));
+  --tree-border: oklch(var(--l900) calc(.012 * var(--c)) var(--hw));
+  --topbar-border: oklch(var(--l930) calc(.008 * var(--c)) var(--hw));
+
+  --ink: oklch(var(--l270) calc(.03 * var(--c)) var(--h));
+  --ink-hover: oklch(var(--l350) calc(.05 * var(--c)) var(--h));
+  /* Muted and faint text: the design's l520/l600 steps, lowered for AA (D-048). */
+  --muted: oklch(var(--l500) calc(.02 * var(--c)) var(--h));
+  --faint: oklch(var(--l500) calc(.015 * var(--c)) var(--h));
+  --rule: oklch(var(--l950) calc(.006 * var(--c)) var(--h));
+  --ring: oklch(var(--l920) calc(.01 * var(--c)) var(--h));
+  --ring-strong: oklch(var(--l910) calc(.01 * var(--c)) var(--h));
+
+  --accent: oklch(var(--l620) calc(.16 * var(--c)) var(--h));
+  --accent-ink: oklch(var(--l500) calc(.16 * var(--c)) var(--h));
+  --link: oklch(var(--l550) calc(.17 * var(--c)) var(--h));
+  --link-hover: oklch(var(--l450) calc(.17 * var(--c)) var(--h));
+  --focus: oklch(var(--l620) calc(.16 * var(--c)) var(--h));
+
+  --hover: oklch(var(--l980) calc(.012 * var(--c)) var(--h));
+  --hover-menu: oklch(var(--l985) calc(.005 * var(--c)) var(--hw));
+  --hover-tree: oklch(var(--l950) calc(.02 * var(--c)) var(--h));
+  --tint: oklch(var(--l960) calc(.015 * var(--c)) var(--h));
+  --track: oklch(var(--l950) calc(.006 * var(--c)) var(--h));
+  --selected: oklch(var(--l930) calc(.045 * var(--c)) var(--h));
+  --selected-ink: oklch(var(--l400) calc(.14 * var(--c)) var(--h));
+
+  --shadow-card: 0 1px 2px oklch(.3 .03 285 / .05), 0 0 0 1px var(--ring);
+  --shadow-pop: 0 14px 34px -10px oklch(.3 .05 285 / .3), 0 0 0 1px var(--ring);
+  --shadow-menu: 0 18px 40px -12px oklch(.2 .04 285 / .35), 0 0 0 1px var(--ring);
+
+  --radius-card: calc(20px * var(--r));
+  --radius-pop: calc(16px * var(--r));
+  --radius-row: calc(12px * var(--r));
+  --radius-small: calc(9px * var(--r));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion: 0;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001s !important;
+    scroll-behavior: auto !important;
+  }
+}

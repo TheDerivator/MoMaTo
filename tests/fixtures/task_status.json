@@ -1,0 +1,36 @@
+{
+  "description": "R4.6: task status, slippage, effective end, status text and the project timeline text. Today is 2026-10-08 unless a case says otherwise.",
+  "status": [
+    {"progress": 0, "planned_start": "2026-10-09", "today": "2026-10-08", "status": "planned"},
+    {"progress": 0, "planned_start": "2026-10-08", "today": "2026-10-08", "status": "running"},
+    {"progress": 0, "planned_start": "2026-09-01", "today": "2026-10-08", "status": "running"},
+    {"progress": 1, "planned_start": "2026-11-01", "today": "2026-10-08", "status": "running"},
+    {"progress": 99, "planned_start": "2026-09-01", "today": "2026-10-08", "status": "running"},
+    {"progress": 100, "planned_start": "2026-09-01", "today": "2026-10-08", "status": "done"},
+    {"progress": 100, "planned_start": "2027-01-01", "today": "2026-10-08", "status": "done"}
+  ],
+  "slipped": [
+    {"planned_end": "2026-12-18", "revised_end": null, "slipped": false, "effective_end": "2026-12-18"},
+    {"planned_end": "2026-12-18", "revised_end": "2027-01-15", "slipped": true, "effective_end": "2027-01-15"},
+    {"planned_end": "2026-12-18", "revised_end": "2026-12-18", "slipped": false, "effective_end": "2026-12-18"},
+    {"planned_end": "2026-12-18", "revised_end": "2026-12-01", "slipped": false, "effective_end": "2026-12-01"}
+  ],
+  "status_text": [
+    {"status": "running", "progress": 45, "text": "45% · running"},
+    {"status": "running", "progress": 0, "text": "0% · running"},
+    {"status": "done", "progress": 100, "text": "Done"},
+    {"status": "planned", "progress": 0, "text": "Planned"}
+  ],
+  "timeline": [
+    {"start": "2025-11-03", "end": "2027-03-31", "today": "2025-11-02", "text": "Starts 3 Nov 2025"},
+    {"start": "2025-11-03", "end": "2025-12-19", "today": "2025-12-20", "text": "Ended 19 Dec 2025"},
+    {"start": "2026-01-01", "end": "2026-12-31", "today": "2026-01-01", "text": "0% of the timeline behind us"},
+    {"start": "2026-01-01", "end": "2026-01-11", "today": "2026-01-06", "text": "50% of the timeline behind us"},
+    {"start": "2026-01-01", "end": "2026-01-11", "today": "2026-01-04", "text": "30% of the timeline behind us"},
+    {"start": "2026-01-01", "end": "2026-01-09", "today": "2026-01-02", "text": "13% of the timeline behind us"},
+    {"start": "2026-01-01", "end": "2026-01-09", "today": "2026-01-03", "text": "25% of the timeline behind us"},
+    {"start": "2026-01-01", "end": "2026-01-11", "today": "2026-01-11", "text": "100% of the timeline behind us"},
+    {"start": "2026-10-08", "end": "2026-10-08", "today": "2026-10-08", "text": "100% of the timeline behind us"},
+    {"start": "2025-11-03", "end": "2027-03-31", "today": "2026-10-08", "text": "66% of the timeline behind us"}
+  ]
+}

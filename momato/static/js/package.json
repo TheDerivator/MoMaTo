@@ -1,0 +1,5 @@
+{
+  "type": "module",
+  "private": true,
+  "description": "Marks these files as ES modules for Node (unit tests in tests/js). Not a build."
+}

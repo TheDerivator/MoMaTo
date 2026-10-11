@@ -1,0 +1,557 @@
+/* Shared components: avatars, status pills, buttons, segmented controls, popovers, dialogs,
+   form fields and toasts. Per-item colours come in as --hue (people, statuses). */
+
+.avatar {
+  width: var(--size, 26px);
+  height: var(--size, 26px);
+  flex: none;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  font-size: calc(var(--size, 26px) * .4);
+  font-weight: var(--w-bold);
+  background: oklch(var(--l890) calc(.065 * var(--c)) var(--hue, 285));
+  color: oklch(var(--l380) calc(.1 * var(--c)) var(--hue, 285));
+}
+
+.avatar--ring {
+  border: 2px solid var(--surface);
+  margin-left: -6px;
+}
+
+.avatar-stack {
+  display: flex;
+  padding-left: 6px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border-radius: var(--rp);
+  font-size: 12px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+  background: oklch(var(--l940) calc(var(--pill-chroma, .055) * var(--c)) var(--hue));
+  color: oklch(var(--l450) calc(var(--pill-ink-chroma, .11) * var(--c)) var(--hue));
+}
+
+.status-pill--gray {
+  --pill-chroma: .008;
+  --pill-ink-chroma: .02;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: oklch(var(--l740) calc(var(--dot-chroma, .14) * var(--c)) var(--hue));
+}
+
+.status-pill .dot {
+  width: 7px;
+  height: 7px;
+}
+
+.dot--gray {
+  --dot-chroma: .02;
+}
+
+/* ------------------------------------------------------------------ buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--rp);
+  font-weight: var(--w-semibold);
+  background: var(--tint);
+  color: var(--ink);
+  text-decoration: none; /* links styled as buttons */
+  transition: background .12s, transform .12s;
+}
+
+.btn:hover {
+  background: oklch(var(--l940) calc(.02 * var(--c)) var(--h));
+}
+
+.btn:active {
+  transform: scale(.96);
+}
+
+.btn--dark {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.btn--dark:hover {
+  background: var(--ink-hover);
+}
+
+.btn--accent {
+  background: oklch(var(--l550) calc(.17 * var(--c)) var(--h));
+  color: var(--on-ink); /* white in light mode, dark in dark mode (the accent is light there) */
+}
+
+.btn--accent:hover {
+  background: oklch(var(--l450) calc(.17 * var(--c)) var(--h));
+}
+
+.btn--ghost {
+  background: transparent;
+}
+
+.btn[disabled] {
+  opacity: .55;
+  cursor: default;
+}
+
+.btn--danger {
+  color: oklch(var(--l450) calc(.14 * var(--c)) 25);
+}
+
+.link-button {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--link);
+  font-weight: var(--w-semibold);
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ chips and segmented */
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px 6px 10px;
+  border-radius: var(--rp);
+  font-size: 13px;
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+  background: var(--surface);
+  color: oklch(var(--l400) calc(.02 * var(--c)) var(--h));
+  border: 1.5px solid var(--ring-strong);
+  transition: background .15s, border-color .15s;
+}
+
+.chip:hover {
+  border-color: oklch(var(--l860) calc(.03 * var(--c)) var(--hue, var(--h)));
+}
+
+.chip[aria-pressed="true"] {
+  background: oklch(var(--l940) calc(var(--pill-chroma, .055) * var(--c)) var(--hue));
+  color: oklch(var(--l450) calc(var(--pill-ink-chroma, .11) * var(--c)) var(--hue));
+  border-color: oklch(var(--l740) calc(var(--dot-chroma, .14) * var(--c)) var(--hue));
+}
+
+.chip--gray {
+  --pill-chroma: .008;
+  --pill-ink-chroma: .02;
+  --dot-chroma: .02;
+}
+
+.chip__count {
+  opacity: .8;
+}
+
+/* A dimmed count on a tinted chip misses AA (D-048): the selected chip shows it in full. */
+.chip[aria-pressed="true"] .chip__count {
+  opacity: 1;
+}
+
+.segmented {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border-radius: var(--rp);
+  background: var(--track);
+}
+
+.segmented button {
+  flex: 1;
+  white-space: nowrap;
+  padding: 7px 12px;
+  border: none;
+  border-radius: var(--rp);
+  font-size: 13px;
+  font-weight: var(--w-semibold);
+  background: transparent;
+  color: var(--muted);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--segment-on);
+  color: var(--ink);
+  box-shadow: 0 1px 3px oklch(.3 .03 285 / .12);
+}
+
+/* ------------------------------------------------------------------ popovers and menus */
+
+.popover-anchor {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  z-index: 30;
+  min-width: 250px;
+  padding: 6px;
+  border-radius: var(--radius-pop);
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popover--below {
+  top: calc(100% + 6px);
+  right: 0;
+}
+
+.popover__title {
+  padding: 6px 10px 4px;
+  font-size: 11px;
+  font-weight: var(--w-bold);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: calc(10px * var(--r));
+  background: transparent;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: var(--w-semibold);
+}
+
+.menu-item:hover,
+.menu-item:focus-visible {
+  background: var(--tint);
+}
+
+.menu-item__name {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.menu-item__count {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.menu-item__chevron {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sheet {
+  position: fixed;
+  left: 14px;
+  bottom: 64px;
+  z-index: 46;
+  width: 280px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: calc(18px * var(--r));
+  box-shadow: var(--shadow-menu);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sheet__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: var(--w-bold);
+}
+
+.sheet__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sheet__note {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: var(--w-semibold);
+}
+
+.switch-row input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+.sheet__link {
+  font-size: 13px;
+  font-weight: var(--w-semibold);
+}
+
+/* ------------------------------------------------------------------ dialogs and fields */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: oklch(.27 .03 285 / .28);
+  backdrop-filter: blur(3px);
+}
+
+.dialog {
+  width: min(520px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 22px 24px;
+  border-radius: calc(24px * var(--r));
+  background: var(--surface);
+  box-shadow: var(--shadow-menu);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dialog__title {
+  font-size: 20px;
+  font-weight: var(--w-bold);
+  letter-spacing: -.01em;
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog__actions--split {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.dialog__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.field__label {
+  font-size: 12px;
+  font-weight: var(--w-bold);
+  color: var(--muted);
+}
+
+.field__hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.field__error {
+  font-size: 12.5px;
+  font-weight: var(--w-semibold);
+  color: oklch(var(--l450) calc(.16 * var(--c)) 25);
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: none;
+  border-radius: var(--radius-row);
+  background: var(--tint);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  outline: none;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  box-shadow: inset 0 0 0 1.5px var(--focus);
+}
+
+.textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: var(--w-semibold);
+}
+
+.picker {
+  position: relative;
+}
+
+.picker__results {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  max-height: 240px;
+  overflow: auto;
+  padding: 6px;
+  border-radius: var(--radius-pop);
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ------------------------------------------------------------------ toasts */
+
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.toast {
+  max-width: 380px;
+  padding: 10px 14px;
+  border-radius: var(--radius-row);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-weight: var(--w-semibold);
+  box-shadow: var(--shadow-menu);
+}
+
+.toast--error {
+  background: oklch(.45 .15 25);
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------ small pieces */
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.page {
+  padding: 28px 32px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.placeholder {
+  max-width: 640px;
+  padding: 28px 32px;
+}
+
+.placeholder h1 {
+  font-size: 28px;
+  font-weight: var(--w-bold);
+  letter-spacing: -.02em;
+  margin-bottom: 8px;
+}
+
+/* "via Claude Code": what an API token wrote (TOK-3) */
+.via-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: var(--rp);
+  background: var(--tint);
+  font-size: 11.5px;
+  font-weight: var(--w-semibold);
+  color: var(--muted);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* "Export" popovers (EXP-3) */
+.export-popover {
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+}
+
+.export-period {
+  display: flex;
+  gap: 10px;
+}
+
+.export-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item--off {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* the sign-in buttons of single sign-on (AUTH-3) */
+.sso-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sso-buttons__or {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+}

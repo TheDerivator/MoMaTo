@@ -1,0 +1,848 @@
+/* My timesheet: header, summary card, days, fill-up cards, the week card and the celebration
+   (TS-1 – TS-15, SH-2). */
+
+.timesheet {
+  padding: 28px 36px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 1240px;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.ts-head {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ts-head__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ts-head__range {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-head__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: var(--w-bold);
+  letter-spacing: -.025em;
+}
+
+.ts-weeks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ts-weeks__button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--ring);
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.ts-weeks__button--off {
+  opacity: .35;
+}
+
+.ts-weeks__current {
+  min-width: 84px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: var(--w-semibold);
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ summary */
+
+.ts-summary {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 20px 22px;
+  border-radius: calc(24px * var(--r));
+}
+
+.ts-ring {
+  --ring-color: var(--accent);
+  width: 96px;
+  height: 96px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--ring-color) calc(var(--pct) * 1%), oklch(var(--l930) calc(.015 * var(--c)) var(--h)) 0);
+  transition: background .3s;
+}
+
+.ts-ring--full {
+  --ring-color: oklch(var(--l680) calc(.15 * var(--c)) 155);
+}
+
+.ts-ring--big {
+  width: 120px;
+  height: 120px;
+}
+
+.ts-ring__inner {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ts-ring--big .ts-ring__inner {
+  width: 96px;
+  height: 96px;
+}
+
+.ts-ring__hours {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: var(--w-heavy);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-ring__of {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ts-summary__main {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ts-stack {
+  display: flex;
+  height: 12px;
+  border-radius: calc(6px * var(--r));
+  overflow: hidden;
+  background: oklch(var(--l950) calc(.006 * var(--c)) var(--h));
+}
+
+.ts-stack__part {
+  height: 100%;
+  background: oklch(var(--l680) calc(.14 * var(--c)) var(--hue, var(--h)));
+  transition: width .3s;
+}
+
+.ts-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 8px;
+}
+
+.ts-day {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 2px solid oklch(var(--l930) calc(.01 * var(--c)) var(--h));
+  border-radius: calc(14px * var(--r));
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+  transition: border-color .15s, background .15s;
+}
+
+.ts-day[disabled] {
+  opacity: .5;
+}
+
+.ts-day--on {
+  border-color: var(--accent);
+  background: oklch(var(--l960) calc(.03 * var(--c)) var(--h));
+}
+
+.ts-day__top {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ts-day__date {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ts-day__tag {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: var(--w-heavy);
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.ts-day--full .ts-day__tag {
+  color: oklch(var(--l500) calc(.14 * var(--c)) 155);
+}
+
+.ts-day--open .ts-day__tag {
+  color: oklch(var(--l500) calc(.13 * var(--c)) 60);
+}
+
+.ts-day__bar {
+  height: 6px;
+  border-radius: calc(3px * var(--r));
+  background: oklch(var(--l940) calc(.01 * var(--c)) var(--h));
+  overflow: hidden;
+}
+
+.ts-day__fill {
+  display: block;
+  height: 100%;
+  border-radius: calc(3px * var(--r));
+  background: var(--accent);
+  transition: width .3s;
+}
+
+.ts-day--full .ts-day__fill {
+  background: oklch(var(--l680) calc(.15 * var(--c)) 155);
+}
+
+.ts-day__hours {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ts-submit {
+  padding: 14px 24px;
+  border: none;
+  border-radius: var(--rp);
+  background: oklch(var(--l550) calc(.17 * var(--c)) var(--h));
+  color: var(--on-ink);
+  font-size: 15px;
+  font-weight: var(--w-heavy);
+  white-space: nowrap;
+  transition: transform .12s, background .2s;
+}
+
+.ts-submit:active {
+  transform: scale(.95);
+}
+
+.ts-submit--done {
+  background: oklch(var(--l500) calc(.14 * var(--c)) 155);
+}
+
+.ts-hint {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------ fill-up cards */
+
+.ts-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(172px, 196px));
+  gap: 14px;
+}
+
+.ts-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 340px;
+  padding: 16px;
+  border-radius: calc(24px * var(--r));
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+}
+
+.ts-card__fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: oklch(var(--l910) calc(.06 * var(--c)) var(--hue));
+  transition: height .45s cubic-bezier(.3, 1.5, .5, 1);
+}
+
+.ts-card__badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: oklch(var(--l500) calc(.14 * var(--c)) var(--hue));
+  color: var(--on-ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ts-card__body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ts-card__sub {
+  padding-right: 34px;
+  font-size: 11.5px;
+  font-weight: var(--w-semibold);
+  color: var(--muted);
+}
+
+.ts-card__title {
+  padding-right: 24px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: var(--w-bold);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+
+.ts-card__title--link {
+  text-decoration: underline;
+  text-decoration-color: oklch(var(--l680) calc(.14 * var(--c)) var(--hue) / .45);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color .15s;
+}
+
+.ts-card__title--link:hover {
+  text-decoration-color: currentColor;
+}
+
+.ts-card__note {
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: var(--w-bold);
+  color: oklch(var(--l420) calc(.11 * var(--c)) var(--hue));
+}
+
+.ts-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 12px -6px 0;
+}
+
+.ts-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: calc(11px * var(--r));
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: var(--w-medium);
+  transition: background .15s, box-shadow .15s;
+}
+
+.ts-task:hover {
+  background: oklch(var(--l1000) 0 0 / .75);
+}
+
+.ts-task--on {
+  background: oklch(var(--l1000) 0 0 / .92);
+  font-weight: var(--w-bold);
+  box-shadow: 0 0 0 1.5px oklch(var(--l680) calc(.14 * var(--c)) var(--hue));
+}
+
+.ts-task__dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: oklch(var(--l840) calc(.01 * var(--c)) var(--h));
+}
+
+.ts-task--on .ts-task__dot {
+  background: oklch(var(--l680) calc(.14 * var(--c)) var(--hue));
+}
+
+.ts-task__name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-task__hours {
+  font-size: 11.5px;
+  color: oklch(var(--l450) calc(.02 * var(--c)) var(--h));
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-card__spacer {
+  flex: 1;
+  min-height: 12px;
+}
+
+.ts-card__day {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.ts-card__hours {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: var(--w-heavy);
+  line-height: 1;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-card__unit {
+  font-size: 13px;
+  color: oklch(var(--l450) calc(.02 * var(--c)) var(--h));
+}
+
+.ts-card__week {
+  font-size: 12px;
+  color: oklch(var(--l450) calc(.02 * var(--c)) var(--h));
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-card__buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ts-minus,
+.ts-plus {
+  height: 44px;
+  border: none;
+  font-weight: var(--w-semibold);
+  transition: transform .1s;
+}
+
+.ts-minus {
+  width: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px oklch(var(--l900) calc(.01 * var(--c)) var(--h));
+  color: var(--ink);
+  font-size: 20px;
+}
+
+.ts-minus:active {
+  transform: scale(.9);
+}
+
+.ts-plus {
+  flex: 1;
+  border-radius: calc(22px * var(--r));
+  background: oklch(var(--l500) calc(.14 * var(--c)) var(--hue));
+  color: var(--on-ink);
+  font-size: 15px;
+  font-weight: var(--w-heavy);
+}
+
+.ts-plus:active {
+  transform: scale(.94);
+}
+
+.ts-minus[disabled],
+.ts-plus[disabled] {
+  opacity: .4;
+}
+
+.ts-card__goes {
+  margin-top: 6px;
+  font-size: 11.5px;
+  text-align: center;
+  color: oklch(var(--l450) calc(.02 * var(--c)) var(--h));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-foot {
+  display: flex;
+}
+
+.ts-add__popover {
+  left: 0;
+  right: auto;
+  top: auto;
+  bottom: calc(100% + 6px);
+  min-width: 300px;
+}
+
+/* ------------------------------------------------------------------ the week card in the menu */
+
+.week-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: calc(18px * var(--r));
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.week-card:hover {
+  box-shadow: 0 1px 2px oklch(.3 .03 285 / .05), 0 0 0 1.5px oklch(var(--l800) calc(.06 * var(--c)) var(--h));
+}
+
+.week-card--open {
+  background: oklch(var(--l975) calc(.025 * var(--c)) var(--hw));
+}
+
+.week-card--open .week-card__title,
+.week-card--open .week-card__cta {
+  color: oklch(var(--l500) calc(.12 * var(--c)) 60);
+}
+
+.week-card--submitted .week-card__title {
+  color: oklch(var(--l450) calc(.13 * var(--c)) 155);
+}
+
+.week-card--full .week-card__title {
+  color: oklch(var(--l450) calc(.13 * var(--c)) 155);
+}
+
+.week-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.week-card__hours {
+  font-size: 12px;
+  font-weight: var(--w-semibold);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.week-card__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: var(--w-heavy);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+}
+
+.week-card__days {
+  display: flex;
+  gap: 4px;
+}
+
+.week-dot {
+  flex: 1;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 2px solid transparent;
+  border-radius: calc(9px * var(--r));
+  background: linear-gradient(
+    to top,
+    oklch(var(--l860) calc(.08 * var(--c)) 155) var(--fill, 0%),
+    oklch(var(--l955) calc(.008 * var(--c)) var(--h)) var(--fill, 0%)
+  );
+  color: oklch(var(--l450) calc(.02 * var(--c)) var(--h));
+  font-size: 11px;
+  font-weight: var(--w-bold);
+}
+
+.week-dot--full {
+  background: oklch(var(--l680) calc(.15 * var(--c)) 155);
+  color: var(--on-ink);
+}
+
+.week-dot--open {
+  background: oklch(var(--l940) calc(.06 * var(--c)) 70);
+  color: oklch(var(--l500) calc(.12 * var(--c)) 60);
+}
+
+.week-dot--future {
+  background: transparent;
+  border: 1.5px dashed oklch(var(--l850) calc(.01 * var(--c)) var(--h));
+}
+
+.week-dot--today {
+  border: 2px solid var(--accent);
+}
+
+.week-card__sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.week-card__cta {
+  font-size: 12.5px;
+  font-weight: var(--w-bold);
+  color: var(--link);
+}
+
+.week-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.week-rail__ring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--accent) calc(var(--pct) * 1%), oklch(var(--l930) calc(.015 * var(--c)) var(--h)) 0);
+}
+
+.week-rail__ring--full {
+  background: conic-gradient(oklch(var(--l680) calc(.15 * var(--c)) 155) calc(var(--pct) * 1%), oklch(var(--l930) calc(.015 * var(--c)) var(--h)) 0);
+}
+
+.week-rail__hours {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.week-rail__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.week-rail__bar {
+  width: 22px;
+  height: 8px;
+  border-radius: calc(4px * var(--r));
+  background: oklch(var(--l940) calc(.01 * var(--c)) var(--h));
+  overflow: hidden;
+}
+
+.week-rail__fill {
+  display: block;
+  height: 100%;
+  background: oklch(var(--l620) calc(.16 * var(--c)) var(--h));
+}
+
+.week-rail__bar--full .week-rail__fill {
+  background: oklch(var(--l680) calc(.15 * var(--c)) 155);
+}
+
+.week-rail__bar--open {
+  background: oklch(var(--l940) calc(.06 * var(--c)) 70);
+}
+
+/* ------------------------------------------------------------------ celebration */
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: oklch(.2 .02 285 / .55);
+  backdrop-filter: blur(5px);
+}
+
+.celebration__confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti__piece {
+  position: absolute;
+  top: -20px;
+  border-radius: 2px;
+  background: oklch(var(--l680) calc(.14 * var(--c)) var(--hue));
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate3d(var(--drift), 110vh, 0) rotate(var(--spin));
+    opacity: .9;
+  }
+}
+
+.celebration__modal {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 32px 28px 28px;
+  border-radius: calc(28px * var(--r));
+  background: var(--surface);
+  box-shadow: var(--shadow-menu);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  animation: celebration-pop .5s cubic-bezier(.3, 1.5, .5, 1);
+}
+
+.celebration__modal--still {
+  animation: none;
+}
+
+@keyframes celebration-pop {
+  from {
+    transform: scale(.6);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.celebration__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: var(--w-heavy);
+  letter-spacing: -.02em;
+}
+
+.celebration__summary {
+  margin: 0;
+  color: var(--muted);
+}
+
+.celebration__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.celebration__chip {
+  padding: 5px 11px;
+  border-radius: var(--rp);
+  background: var(--tint);
+  font-size: 12.5px;
+}
+
+.celebration__close {
+  margin-top: 6px;
+  padding: 12px 26px;
+}
+
+/* ------------------------------------------------------------------ phone width (TS-12) */
+
+@media (max-width: 599px) {
+  .timesheet {
+    padding: 20px 16px 48px;
+  }
+
+  .ts-head__title {
+    font-size: 26px;
+  }
+
+  .ts-summary {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .ts-summary__main {
+    min-width: 0;
+    flex-basis: 100%;
+  }
+
+  .ts-days {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ts-day {
+    padding: 8px 6px;
+    align-items: center;
+  }
+
+  .ts-day__date,
+  .ts-day__bar,
+  .ts-day__hours {
+    display: none;
+  }
+
+  .ts-day__top {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .ts-day__tag {
+    margin-left: 0;
+  }
+
+  .ts-submit {
+    width: 100%;
+  }
+
+  .ts-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ts-card {
+    min-height: 0;
+  }
+}
+
+.ts-card__via {
+  font-size: 11.5px;
+  font-weight: var(--w-semibold);
+  color: var(--muted);
+}
