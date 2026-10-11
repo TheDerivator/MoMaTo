@@ -121,6 +121,7 @@ def test_role_input_is_validated_and_built_ins_are_read_only(admin: TestClient) 
         {**ok, "key": "Bad Key"},
         {**ok, "key": "x"},
         {**ok, "name": ""},
+        {**ok, "name": "   "},
         {**ok, "key": "another", "permissions": ["not.a.permission"]},
     ):
         assert admin.post("/api/admin/roles", json=bad).status_code == 422, bad

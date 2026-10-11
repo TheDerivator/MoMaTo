@@ -6,6 +6,7 @@ from typing import Any
 from pydantic import BaseModel, Field, field_validator
 
 from momato.domain.projects import Priority, ProjectStatus
+from momato.schemas.common import Name200
 
 
 class PersonRef(BaseModel):
@@ -106,7 +107,7 @@ class ProjectOut(BaseModel):
 
 
 class ProjectCreate(BaseModel):
-    name: str = Field(min_length=1, max_length=200)
+    name: Name200
     org_node_id: int
     coordinator_id: int | None = None  # default: the caller
     start_date: date
@@ -129,7 +130,7 @@ class ProjectUpdate(BaseModel):
     """A partial edit of the core fields and details; `version` is the one the editor loaded."""
 
     version: int
-    name: str | None = Field(default=None, min_length=1, max_length=200)
+    name: Name200 | None = None
     status: ProjectStatus | None = None
     start_date: date | None = None
     end_date: date | None = None
@@ -145,7 +146,7 @@ class MemberAdd(BaseModel):
 
 
 class TaskCreate(BaseModel):
-    name: str = Field(min_length=1, max_length=200)
+    name: Name200
     planned_start: date
     planned_end: date
     revised_end: date | None = None
@@ -155,7 +156,7 @@ class TaskCreate(BaseModel):
 
 class TaskUpdate(BaseModel):
     version: int
-    name: str | None = Field(default=None, min_length=1, max_length=200)
+    name: Name200 | None = None
     planned_start: date | None = None
     planned_end: date | None = None
     revised_end: date | None = None

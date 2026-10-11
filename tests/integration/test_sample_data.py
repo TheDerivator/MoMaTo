@@ -517,3 +517,43 @@ def test_a_profile_variant_with_one_category_per_kind_still_builds(tmp_path: Pat
     assert all(len(p.tasks) == 1 for p in built.projects)
     cells = Counter((e.person, e.day, e.project, e.task, e.category) for e in built.entries)
     assert max(cells.values()) == 1
+
+
+# ---------------------------------------------------------------- a root created at first sign-in
+
+
+def test_the_sample_takes_over_a_root_created_at_first_sign_in(
+    database: Database, settings: Settings
+) -> None:
+    """[ADM-1] An administrator who named the organisation before seeding keeps one root."""
+    with database.session(write=True) as session:
+        root = OrgNode(name="Acme Corp", position=0, is_department=False)
+        session.add(root)
+        session.flush()
+        root_id = root.id
+        loaded = load_sample_data(
+            session, today=SAMPLE_TODAY, profile=PROFILE, uploads_dir=settings.uploads_dir
+        )
+    assert loaded is True
+    with database.new_session() as read_session:
+        roots = list(read_session.scalars(select(OrgNode).where(OrgNode.parent_id.is_(None))))
+        assert [r.id for r in roots] == [root_id]
+        assert roots[0].name == build_sample(SAMPLE_TODAY, PROFILE).root
+        assert read_session.scalar(select(func.count()).select_from(Project)) == 200
+
+
+def test_the_sample_is_not_loaded_into_an_organisation_that_has_branches(
+    database: Database, settings: Settings
+) -> None:
+    with database.session(write=True) as session:
+        root = OrgNode(name="Acme Corp", position=0, is_department=False)
+        session.add(root)
+        session.flush()
+        session.add(OrgNode(name="Plant", parent_id=root.id, position=0, is_department=True))
+        session.flush()
+        loaded = load_sample_data(
+            session, today=SAMPLE_TODAY, profile=PROFILE, uploads_dir=settings.uploads_dir
+        )
+        assert loaded is False
+        assert session.scalar(select(func.count()).select_from(Project)) == 0
+        assert session.scalar(select(func.count()).select_from(OrgNode)) == 2

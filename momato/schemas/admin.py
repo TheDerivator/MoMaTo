@@ -4,29 +4,28 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Annotated, Any, Self
 
-from pydantic import AfterValidator, BaseModel, Field, field_validator, model_validator
+from pydantic import AfterValidator, BaseModel, Field, model_validator
 
 from momato.db.models.people import UserStatus
 from momato.domain.access import Audience, Permission, Scope, ScopeKind
+from momato.schemas.common import Name100, Name200
 
 MAX_WORK_MINUTES = 12 * 60
 
 
 class OrgNodeCreate(BaseModel):
-    parent_id: int
-    name: str = Field(min_length=1, max_length=200)
-    is_department: bool = False
+    """A new branch under `parent_id`; without a parent it is the root, allowed only while the
+    organisation has none (a fresh installation)."""
 
-    @field_validator("name")
-    @classmethod
-    def _strip(cls, value: str) -> str:
-        return value.strip()
+    parent_id: int | None = None
+    name: Name200
+    is_department: bool = False
 
 
 class OrgNodeUpdate(BaseModel):
     """Every field is optional; `parent_id` moves the node (with `position` choosing the place)."""
 
-    name: str | None = Field(default=None, min_length=1, max_length=200)
+    name: Name200 | None = None
     is_department: bool | None = None
     parent_id: int | None = None
     position: int | None = Field(default=None, ge=0)
@@ -43,7 +42,7 @@ WorkMinutes = Annotated[list[int], Field(min_length=5, max_length=5), AfterValid
 
 
 class PersonCreate(BaseModel):
-    name: str = Field(min_length=1, max_length=200)
+    name: Name200
     job_title: str | None = Field(default=None, max_length=100)
     org_node_id: int
     hue: int = Field(default=285, ge=0, le=359)
@@ -53,7 +52,7 @@ class PersonCreate(BaseModel):
 class PersonUpdate(BaseModel):
     """Only the fields that are sent change; `job_title: null` clears the title."""
 
-    name: str | None = Field(default=None, min_length=1, max_length=200)
+    name: Name200 | None = None
     job_title: str | None = Field(default=None, max_length=100)
     org_node_id: int | None = None
     hue: int | None = Field(default=None, ge=0, le=359)
@@ -191,13 +190,13 @@ class RoleOut(BaseModel):
 
 class RoleCreate(BaseModel):
     key: str = Field(pattern=r"^[a-z][a-z0-9_-]{1,49}$")
-    name: str = Field(min_length=1, max_length=100)
+    name: Name100
     description: str = Field(default="", max_length=1000)
     permissions: list[Permission] = []
 
 
 class RoleUpdate(BaseModel):
-    name: str | None = Field(default=None, min_length=1, max_length=100)
+    name: Name100 | None = None
     description: str | None = Field(default=None, max_length=1000)
     permissions: list[Permission] | None = None
 

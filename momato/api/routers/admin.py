@@ -48,7 +48,8 @@ def org_tree(org: OrgAdmin) -> list[OrgNodeOut]:
 
 @router.post("/org", status_code=status.HTTP_201_CREATED)
 def add_node(body: OrgNodeCreate, org: OrgAdmin) -> list[OrgNodeOut]:
-    """Add a branch under a node; the whole tree comes back."""
+    """Add a branch under a node; the whole tree comes back. Without `parent_id` it creates the
+    root, which is allowed only on a fresh installation (409 once there is one)."""
     org.create(body)
     return org.nodes()
 

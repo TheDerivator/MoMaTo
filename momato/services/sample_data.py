@@ -898,16 +898,22 @@ def load_sample_data(
     uploads_dir: Path | None = None,
     demo_password: str | None = None,
 ) -> bool:
-    """Insert the sample into an empty database; False (nothing done) when it holds projects.
+    """Insert the sample into an empty database; False (nothing done) when it holds projects or
+    an organisation beyond its root (a root created at the first sign-in is taken over and
+    renamed).
 
     With `demo_password` every sample person can sign in as `anna.claes` and so on (demos only).
     """
     if session.scalar(select(func.count()).select_from(Project)):
         return False
+    existing = list(session.scalars(select(OrgNode)))
+    if len(existing) > 1:
+        return False
     sample = build_sample(today, profile)
 
     nodes: dict[str, OrgNode] = {}
-    root = OrgNode(name=sample.root, position=0, is_department=False)
+    root = existing[0] if existing else OrgNode(position=0, is_department=False, name=sample.root)
+    root.name = sample.root
     session.add(root)
     session.flush()
     for spec in sample.org:  # parents come before their children

@@ -27,6 +27,11 @@ export function adminSections(permissions) {
   return sections;
 }
 
+/** Whether a person may name the organisation on a fresh installation (it needs `org.manage`). */
+export function canSetUpOrganisation(permissions) {
+  return Boolean(permissions["org.manage"]?.everywhere);
+}
+
 /** The section to show: the one asked for when allowed, else the first. */
 export function chosenSection(sections, wanted) {
   return sections.find((s) => s.key === wanted) ?? sections[0] ?? null;

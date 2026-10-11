@@ -91,7 +91,7 @@ def _seed(args: argparse.Namespace) -> int:
         print(
             "Loaded the sample data."
             if loaded
-            else "The database already holds projects: sample data not loaded."
+            else "The database already holds projects or an organisation: sample data not loaded."
         )
     database.dispose()
     return 0

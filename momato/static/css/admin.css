@@ -451,3 +451,35 @@
   font-size: 12.5px;
   overflow-wrap: anywhere;
 }
+
+/* First run: an empty organisation asks an administrator to name it. */
+.setup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 12vh 16px 32px;
+}
+
+.setup__title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: var(--w-heavy);
+  letter-spacing: -.03em;
+}
+
+.setup__card {
+  gap: 14px;
+}
+
+.setup__note {
+  margin: 0;
+}
+
+.setup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

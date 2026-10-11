@@ -4,8 +4,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import {
-  actionLabel, adminSections, chosenSection, daysText, detailsText, hoursField, minutesFromText,
-  parseScope, patternFromTexts, patternSummary, scopeOptions, scopeValue, suggestUsername,
+  actionLabel, adminSections, canSetUpOrganisation, chosenSection, daysText, detailsText,
+  hoursField, minutesFromText, parseScope, patternFromTexts, patternSummary, scopeOptions,
+  scopeValue, suggestUsername,
 } from "../../momato/static/js/lib/admin.js";
 import { buildTree } from "../../momato/static/js/lib/tree.js";
 
@@ -14,6 +15,13 @@ const everywhere = { everywhere: true, node_ids: [] };
 const rights = (org, users) => ({
   "org.manage": org ? everywhere : nobody,
   "users.manage": users ? everywhere : nobody,
+});
+
+test("[ADM-1] only org.manage held everywhere may name the organisation on a fresh installation", () => {
+  assert.equal(canSetUpOrganisation(rights(true, false)), true);
+  assert.equal(canSetUpOrganisation(rights(false, true)), false);
+  assert.equal(canSetUpOrganisation({}), false);
+  assert.equal(canSetUpOrganisation({ "org.manage": { everywhere: false, node_ids: [3] } }), false);
 });
 
 test("[ADM-1] [ADM-5] sections follow the two administration rights", () => {

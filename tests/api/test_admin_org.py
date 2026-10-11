@@ -89,7 +89,9 @@ def test_adding_needs_a_known_parent_and_a_name(admin: TestClient) -> None:
     assert admin.post("/api/admin/org", json={"parent_id": 999_999, "name": "X"}).status_code == 404
     parent = node_id(admin, "STL")
     assert admin.post("/api/admin/org", json={"parent_id": parent, "name": ""}).status_code == 422
-    assert admin.post("/api/admin/org", json={"name": "No parent"}).status_code == 422
+    assert admin.post("/api/admin/org", json={"parent_id": parent, "name": "  "}).status_code == 422
+    # no parent means "the root": refused once the organisation has one (tests/api/test_first_run.py)
+    assert admin.post("/api/admin/org", json={"name": "No parent"}).status_code == 409
 
 
 # ---------------------------------------------------------------- rename and flag

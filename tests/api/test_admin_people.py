@@ -170,6 +170,7 @@ def test_a_person_is_created_without_a_sign_in_and_appears_in_the_pickers(
     "body",
     [
         {"name": "", "org_node_id": 1},
+        {"name": "   ", "org_node_id": 1},
         {"name": "No node"},
         {"name": "Far node", "org_node_id": 999_999},
         {"name": "Short week", "org_node_id": 1, "work_minutes": [480, 480]},

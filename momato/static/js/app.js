@@ -23,6 +23,7 @@ import { ProfileView } from "./views/profile.js";
 import { ProjectView } from "./views/project.js";
 import { TimesheetView } from "./views/timesheet.js";
 import { ProjectsView } from "./views/projects.js";
+import { SetupView } from "./views/setup.js";
 
 function useAppearance() {
   const [appearance, setState] = useState(() => appearanceLib.read(localStorage));
@@ -195,6 +196,17 @@ export function App() {
   if (phase === "password") {
     return html`<div class="app">
       <${PasswordDialog} onChanged=${() => loadBoot()} onLogout=${logout} />
+    </div>`;
+  }
+
+  // Signing out clears the bootstrap a moment before the phase becomes "anonymous".
+  if (!boot || !tree) return html`<div class="loading-screen">MoMaTo</div>`;
+
+  if (!tree.root) {
+    // A fresh installation has no organisation: nothing else can exist before its root.
+    return html`<div class="app">
+      <${SetupView} me=${boot.me} reload=${loadBoot} logout=${logout} toast=${toast} />
+      <${Toasts} toasts=${toasts} />
     </div>`;
   }
 

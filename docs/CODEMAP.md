@@ -99,6 +99,7 @@ momato/                                     MoMaTo: internal project management 
     account.py                              The profile page document: one's own data and availability, read only (ADM-8).
     admin.py                                Shapes of the administration endpoints: org tree, people, sign-in, roles, grants, audit log.
     auth.py                                 Shapes for login, password change and the current-user ("me") document.
+    common.py                               Field types shared by the request schemas: names are trimmed before their length is checked.
     meta.py                                 Shapes of the meta endpoints (health).
     people_planning.py                      Shapes of the People planning endpoints: rows of people by bucket, and one person's lines
     plans.py                                Shapes of the action plan endpoints: the plan, its overview by department, and its feed.
@@ -209,6 +210,7 @@ momato/                                     MoMaTo: internal project management 
         project-remarks.js                  The Remarks tab: composer, remark cards newest first, replies, edit with history, delete
         project.js                          The project page: top line, badges, title, tabs (PP-1 – PP-7). The tabs are in their own files.
         projects.js                         The Projects list: breadcrumb title, status chips, the paged table (PL-1..PL-8).
+        setup.js                            First run: the organisation tree is empty, so an administrator names it (its root) before anything else.
         timesheet.js                        My timesheet: the summary card, the days and the fill-up cards (TS-1 – TS-12).
       api.js                                The JSON API client: paths are relative to the page's base, writes carry the CSRF header (AUTH-1).
       app.js                                The application root: bootstrap, appearance, routing and the shell around the views.
@@ -237,6 +239,7 @@ tests/                                      MoMaTo's tests: unit, integration, a
     test_auth.py                            Login, logout, me, password change, CSRF, throttling, suspension. [AUTH-1] [AUTH-4]
     test_bootstrap.py                       The bootstrap document: reference data for the whole app, never projects. [SH-12]
     test_exports.py                         Exports: the project list and booked time as CSV and XLSX, with the rights of the caller.
+    test_first_run.py                       A fresh installation has no organisation: an administrator names its root, once. [ADM-1] [SH-12]
     test_frontend.py                        Serving the frontend: app routes return the page, base path injection, static caching,
     test_meta.py                            Health endpoint, API docs and the static app shell are served.
     test_people_planning.py                 People planning API: buckets for the pinned date, planned / spent / compare cells, hours
@@ -261,6 +264,7 @@ tests/                                      MoMaTo's tests: unit, integration, a
     conftest.py                             Browser tests: a real server on a free port, driven by Playwright (Chromium).
     test_accessibility.py                   axe-core (WCAG 2.1 AA) on every screen, its popovers and dialogs, in all four appearances.
     test_admin.py                           Administration and the Profile page in a real browser, as the built-in administrator and as
+    test_first_run.py                       A fresh installation in a real browser: the administrator names the organisation, then the app
     test_people.py                          People planning in a real browser. [PPL-1] [PPL-2] [PPL-3] [PPL-4] [PPL-5] [PPL-6] [PPL-7]
     test_planning.py                        The Planning and People & days tabs in a real browser: the gantt, the task dialog, cells and
     test_plans.py                           Action plans in a real browser: branches, the timeline, selection, the feed, managing plans and

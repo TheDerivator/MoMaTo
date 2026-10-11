@@ -36,6 +36,11 @@ browser ──HTTPS──> reverse proxy (Caddy / nginx / IIS) ──HTTP──>
 - **Migrations run at start** (`MOMATO_AUTO_MIGRATE=true`), and so do the built-in roles and
   accounts. On the first start without `MOMATO_INITIAL_ADMIN_PASSWORD`, a generated `admin`
   password is written once to the log; it must be changed at first login.
+- **A fresh installation is empty, with no organisation.** The first thing `admin` sees after
+  signing in is a screen asking for the organisation's name (the root of the org tree); everyone
+  else is told it is not set up yet. Then add departments under Administration › Organisation and
+  people under Administration › People. Loading the demo data instead (`seed --sample`) works
+  before or after naming the organisation: it takes over the root and renames it.
 - **The profile** (`MOMATO_PROFILE`, default `default`) fixes the detail fields, time categories,
   task template and a few numbers of the deployment; it is a file in `momato/profiles/` and a
   broken one stops the server with a clear message.

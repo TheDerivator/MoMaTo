@@ -77,6 +77,8 @@ class OrgAdminService:
     # ------------------------------------------------------------ changes
 
     def create(self, data: OrgNodeCreate) -> OrgNode:
+        if data.parent_id is None:
+            return self._create_root(data)
         parent = self._node(data.parent_id)
         self._check_name(parent.id, data.name)
         node = OrgNode(
@@ -88,6 +90,17 @@ class OrgAdminService:
         self.session.add(node)
         self.session.flush()
         self._record("org.node_created", node, parent=parent.name, department=data.is_department)
+        self.session.commit()
+        return node
+
+    def _create_root(self, data: OrgNodeCreate) -> OrgNode:
+        """The first node of a fresh installation (nothing else can be created before it)."""
+        if self._count(OrgNode.parent_id.is_(None)):
+            raise ConflictError("the organisation already has a root: add the branch under a node")
+        node = OrgNode(name=data.name, is_department=False, position=0)
+        self.session.add(node)
+        self.session.flush()
+        self._record("org.node_created", node, root=True)
         self.session.commit()
         return node
 
