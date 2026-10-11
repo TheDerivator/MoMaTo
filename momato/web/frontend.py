@@ -11,6 +11,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException
 from starlette.types import Scope
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
@@ -21,10 +22,19 @@ APP_ROUTES = frozenset({"", "projects", "timesheet", "people", "plans", "profile
 
 
 class RevalidatingStaticFiles(StaticFiles):
-    """Static files that browsers must revalidate (cheap 304s), so a deploy is picked up at once."""
+    """Static files that browsers must revalidate (cheap 304s), so a deploy is picked up at once.
+
+    A file that is missing answers 404 with `no-store`: a CDN or browser that remembered the 404
+    of a script would keep the page broken after the file arrives (a deploy missing a file).
+    """
 
     async def get_response(self, path: str, scope: Scope) -> Response:
-        response = await super().get_response(path, scope)
+        try:
+            response = await super().get_response(path, scope)
+        except HTTPException as error:
+            raise HTTPException(
+                error.status_code, error.detail, headers={"Cache-Control": "no-store"}
+            ) from error
         response.headers["Cache-Control"] = "no-cache"
         return response
 

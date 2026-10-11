@@ -41,6 +41,17 @@ def test_app_routes_serve_the_page(client: TestClient, path: str) -> None:
     assert response.headers["cache-control"] == "no-cache"
 
 
+def test_a_missing_static_file_is_not_cacheable(client: TestClient) -> None:
+    """A CDN remembering the 404 of a script would keep the page broken after the deploy is
+    fixed (seen behind Cloudflare), so a missing file says `no-store`. [SH-8]"""
+    response = client.get("/static/js/lib/not-there.js")
+    assert response.status_code == 404
+    assert response.headers["cache-control"] == "no-store"
+    existing = client.get("/static/js/lib/routes.js")
+    assert existing.status_code == 200
+    assert existing.headers["cache-control"] == "no-cache"
+
+
 def test_the_servers_routes_are_the_routers_routes() -> None:
     """[SH-8] The first path segments the server answers with the page are the ones the browser
     router knows (static/js/lib/routes.js), plus the root that redirects to the projects."""
